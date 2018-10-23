@@ -34,6 +34,7 @@ public class MoodSelectActivity extends AppCompatActivity {
 
         //normal mood and background are set by default
         mDisplayedMood.setImageDrawable(moodList[2]);
+        mLayout.setBackgroundColor(0xa5468ad9);
 
         //at each click on the ImageView moods and the layout background colors are cycle through(worst to best)
         mDisplayedMood.setOnClickListener(new View.OnClickListener() {
