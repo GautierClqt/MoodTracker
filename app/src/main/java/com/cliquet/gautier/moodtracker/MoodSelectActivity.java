@@ -10,26 +10,26 @@ import android.widget.RelativeLayout;
 
 public class MoodSelectActivity extends AppCompatActivity {
 
-    //i is used to cycle through moods, is set to 2 in order to display the normal mood by default
-    public int i;
+    public RelativeLayout mLayout;
+    public Drawable[] moodList = new Drawable[5];
+    public int moodIndex;
+    public SharedPreferences preferences = getPreferences(MODE_PRIVATE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_select);
 
-        final SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        int moodIndex = getPreferences(MODE_PRIVATE).getInt("mood_index", 3);
+        //preferences.edit().putInt("mood_index", moodIndex).apply(); // <- MUST BE ERASSED - use to set preferences right
+        moodIndex = getPreferences(MODE_PRIVATE).getInt("mood_index", 2);
 
         //connecting the views
         final ImageView mDisplayedMood;
         mDisplayedMood = findViewById(R.id.activity_mood_select_placeholder_image);
 
-        final RelativeLayout mLayout;
         mLayout = findViewById(R.id.activity_mood_select_layout_layout);
 
-        //all five moods' images are stored in this array
-        final Drawable[] moodList = new Drawable[5];
+        //all five moods' images are stored in moodList
         moodList[0] = getResources().getDrawable(R.drawable.smiley_sad);
         moodList[1] = getResources().getDrawable(R.drawable.smiley_disappointed);
         moodList[2] = getResources().getDrawable(R.drawable.smiley_normal);
@@ -38,31 +38,46 @@ public class MoodSelectActivity extends AppCompatActivity {
 
         //normal mood and background are set by default
         mDisplayedMood.setImageDrawable(moodList[moodIndex]);
-        mLayout.setBackgroundColor(0xa5468ad9);
+        moodIndex = modifyBackgroundColor(moodIndex);
+        //mLayout.setBackgroundColor(0xa5468ad9);
 
         //at each click on the ImageView moods and the layout background colors are cycle through(worst to best)
         mDisplayedMood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                i++;
-                preferences.edit().putInt("mood_index", i).apply();
-                mDisplayedMood.setImageDrawable(moodList[i]);   //display the next mood
-                //display the corresponding background color
-                switch (i) {
-                    case 0: mLayout.setBackgroundColor(0xffde3c50);
-                            break;
-                    case 1: mLayout.setBackgroundColor(0xff9b9b9b);
-                            break;
-                    case 2: mLayout.setBackgroundColor(0xa5468ad9);
-                            break;
-                    case 3: mLayout.setBackgroundColor(0xffb8e986);
-                            break;
-                    case 4: mLayout.setBackgroundColor(0xfff9ec4f);
-                            i = -1; //will be valued to 0(worst mood) at the next click
-                            break;
-                }
+                moodIndex++;
+                mDisplayedMood.setImageDrawable(moodList[moodIndex]);   //display the next mood
+                moodIndex = modifyBackgroundColor(moodIndex);
+                savingPreferences(moodIndex);
             }
         });
+    }
+
+    private int modifyBackgroundColor(int currentMood) {
+        //display the corresponding background color
+        switch (currentMood) {
+            case 0: mLayout.setBackgroundColor(0xffde3c50);
+                break;
+            case 1: mLayout.setBackgroundColor(0xff9b9b9b);
+                break;
+            case 2: mLayout.setBackgroundColor(0xa5468ad9);
+                break;
+            case 3: mLayout.setBackgroundColor(0xffb8e986);
+                break;
+            case 4: mLayout.setBackgroundColor(0xfff9ec4f);
+                currentMood = 0; //will be valued to 0(worst mood) at the next click
+                break;
+        }
+        return currentMood;
+    }
+
+    private void savingPreferences(int currentMood) {
+        if (currentMood >= 0) {
+            preferences.edit().putInt("mood_index", currentMood).apply();
+        } else {
+            currentMood = 0;
+            preferences.edit().putInt("mood_index", currentMood).apply();
+        }
     }
 }
 
