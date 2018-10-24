@@ -1,5 +1,6 @@
 package com.cliquet.gautier.moodtracker;
 
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,12 +11,15 @@ import android.widget.RelativeLayout;
 public class MoodSelectActivity extends AppCompatActivity {
 
     //i is used to cycle through moods, is set to 2 in order to display the normal mood by default
-    public int i = 2;
+    public int i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_select);
+
+        final SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        int moodIndex = getPreferences(MODE_PRIVATE).getInt("mood_index", 3);
 
         //connecting the views
         final ImageView mDisplayedMood;
@@ -33,7 +37,7 @@ public class MoodSelectActivity extends AppCompatActivity {
         moodList[4] = getResources().getDrawable(R.drawable.smiley_super_happy);
 
         //normal mood and background are set by default
-        mDisplayedMood.setImageDrawable(moodList[2]);
+        mDisplayedMood.setImageDrawable(moodList[moodIndex]);
         mLayout.setBackgroundColor(0xa5468ad9);
 
         //at each click on the ImageView moods and the layout background colors are cycle through(worst to best)
@@ -41,6 +45,7 @@ public class MoodSelectActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 i++;
+                preferences.edit().putInt("mood_index", i).apply();
                 mDisplayedMood.setImageDrawable(moodList[i]);   //display the next mood
                 //display the corresponding background color
                 switch (i) {
