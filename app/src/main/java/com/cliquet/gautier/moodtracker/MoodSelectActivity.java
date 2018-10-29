@@ -14,16 +14,19 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
     private RelativeLayout mLayout;
     private Drawable[] moodList = new Drawable[5];
     private int moodIndex;
-    private int moodPreferences;
     private String commentPreferences;
     private TextView mDisplayComment;
+    private int backgroundColor;
+    private SharedPreferences preferences;
+
+    Mood mood = new Mood();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_select);
 
-        final SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        preferences = getPreferences(MODE_PRIVATE);
 
         //if there's no preferences normal mood is display by default
         moodIndex = getPreferences(MODE_PRIVATE).getInt("mood_index", 2);
@@ -49,24 +52,21 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
 
         //normal mood and background are set by default
         mDisplayedMood.setImageDrawable(moodList[moodIndex]);
-        moodPreferences = modifyBackgroundColor(moodIndex);
+        backgroundColor = mood.changeBackgroundColor(moodIndex);
+        mLayout.setBackgroundColor(backgroundColor);
 
         //at each click on the ImageView moods and the layout background colors are cycle through(worst to best)
         mDisplayedMood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //to correctly cycle through the moods, especially to go from super happy mood to sad mood
-                if (moodIndex >= 0 && moodIndex < 4) {
-                    moodIndex++;
-                }
-                else{  //if moodIndex = 5(ie. out of moodList bound) it will be set back to 0
-                    moodIndex = 0;
-                }
+                moodIndex = mood.setMoodIndex(moodIndex);
                 mDisplayedMood.setImageDrawable(moodList[moodIndex]);   //display the next mood
-                moodPreferences = modifyBackgroundColor(moodIndex);
-                preferences.edit().putInt("mood_index", moodPreferences).apply();
-                commentPreferences = (String) mDisplayComment.getText();
-                preferences.edit().putString("comment", commentPreferences).apply();
+
+                backgroundColor = mood.changeBackgroundColor(moodIndex);
+                mLayout.setBackgroundColor(backgroundColor);
+
+                preferences.edit().putInt("mood_index", moodIndex).apply();
             }
         });
 
@@ -87,29 +87,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
     @Override
     public void getComment(String comment) {
         mDisplayComment.setText(comment);
-    }
-
-    //display the corresponding background color
-    private int modifyBackgroundColor(int currentMood) {
-        int saveMood = 0;
-        switch (currentMood) {
-            case 0: mLayout.setBackgroundColor(0xffde3c50);
-                saveMood = 0;
-                break;
-            case 1: mLayout.setBackgroundColor(0xff9b9b9b);
-                saveMood = 1;
-                break;
-            case 2: mLayout.setBackgroundColor(0xa5468ad9);
-                saveMood = 2;
-                break;
-            case 3: mLayout.setBackgroundColor(0xffb8e986);
-                saveMood = 3;
-                break;
-            case 4: mLayout.setBackgroundColor(0xfff9ec4f);
-                saveMood = 4;
-                break;
-        }
-        return saveMood;
+        preferences.edit().putString("comment", comment).apply();
     }
 }
 
