@@ -14,18 +14,6 @@
         android:layout_height="250dp"
         android:layout_centerInParent="true" />
 
-    <ImageView
-        android:id="@+id/activity_add_comment_image"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="39dp"
-        android:layout_marginLeft="39dp"
-        android:layout_marginBottom="24dp"
-        app:srcCompat="@drawable/ic_note_add_black" />
-
     <TextView
         android:id="@+id/activity_mood_select_comment_textview"
         android:layout_width="wrap_content"
@@ -34,6 +22,35 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="93dp"
         android:text="Emplacement du commentaire." />
+
+    <ImageView
+        android:id="@+id/activity_add_comment_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="39dp"
+        android:layout_marginBottom="24dp"
+        app:srcCompat="@drawable/ic_note_add_black" />
+
+    <ImageView
+        android:id="@+id/activity_mood_select_display_historic_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@+id/activity_add_comment_image"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="39dp"
+        android:layout_marginBottom="24dp"
+        app:srcCompat="@drawable/ic_history_black" />
+
+    <Button
+        android:id="@+id/activity_mood_select_add_mood_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:text="ajouter" />
 
 
 </RelativeLayout>

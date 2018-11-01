@@ -1,10 +1,12 @@
 package com.cliquet.gautier.moodtracker;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -13,9 +15,10 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
 
     private RelativeLayout mLayout;
     private Drawable[] moodList = new Drawable[5];
+    private TextView mDisplayComment;
+    private Button mAddMood; //TEST -- NE FAIT PAS PARTI DU PRODUIT FINAL
     private int moodIndex;
     private String commentPreferences;
-    private TextView mDisplayComment;
     private int backgroundColor;
     private SharedPreferences preferences;
 
@@ -35,11 +38,14 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         //connecting the views
         final ImageView mDisplayedMood;
         final ImageView mAddComment;
+        final ImageView mDisplayHistoricActivity;
 
         mDisplayedMood = findViewById(R.id.activity_mood_select_placeholder_image);
         mAddComment = findViewById(R.id.activity_add_comment_image);
         mDisplayComment = findViewById(R.id.activity_mood_select_comment_textview);
         mLayout = findViewById(R.id.activity_mood_select_layout_layout);
+        mDisplayHistoricActivity = findViewById(R.id.activity_mood_select_display_historic_image);
+        mAddMood = findViewById(R.id.activity_mood_select_add_mood_button); //TEST -- NE FAIT PAS PARTI DU PRODUIT FINAL
 
         mDisplayComment.setText(commentPreferences);
 
@@ -74,6 +80,23 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
             @Override
             public void onClick(View v) {
                 openDialog();
+            }
+        });
+
+        mDisplayHistoricActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent historicActivityIntent = new Intent(MoodSelectActivity.this, HistoricDisplayActivity.class);
+                startActivity(historicActivityIntent);
+            }
+        });
+
+        //TEST -- NE FAIT PAS PARTI DU PRODUIT FINAL
+        //Ajoute l'humeur et le commentaire sélectionné à l'arraylist pour l'historique
+        mAddMood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }

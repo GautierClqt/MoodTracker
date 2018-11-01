@@ -34,6 +34,7 @@ public class Mood {
         return mBackgroundColor;
     }
 
+    //EN CHANTIER -- A EFFACER SI JAMAIS UTILISE!!!!
     public String getComment() {
         //
         return mComment;
