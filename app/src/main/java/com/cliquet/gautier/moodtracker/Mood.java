@@ -1,12 +1,20 @@
 package com.cliquet.gautier.moodtracker;
 
 import android.graphics.Color;
+import java.util.Date;
 
 
 public class Mood {
 
-    private int mBackgroundColor;
+    private int mIndexMood;
     private String mComment;
+    private Date mDate;
+
+    public Mood(int mIndexMood, String mComment, Date mDate) {
+        this.mIndexMood = mIndexMood;
+        this.mComment = mComment;
+        this.mDate = mDate;
+    }
 
     public int setMoodIndex(int mMoodPosition) {
         if (mMoodPosition >= 0 && mMoodPosition < 4) {
@@ -19,6 +27,9 @@ public class Mood {
     }
 
     public int changeBackgroundColor(int mMoodPosition) {
+
+        int mBackgroundColor = 0;
+
         switch(mMoodPosition) {
             case 0: mBackgroundColor = Color.parseColor("#ffde3c50");
             break;
@@ -31,12 +42,7 @@ public class Mood {
             case 4: mBackgroundColor = Color.parseColor("#fff9ec4f");
             break;
         }
-        return mBackgroundColor;
-    }
 
-    //EN CHANTIER -- A EFFACER SI JAMAIS UTILISE!!!!
-    public String getComment() {
-        //
-        return mComment;
+        return mBackgroundColor;
     }
 }

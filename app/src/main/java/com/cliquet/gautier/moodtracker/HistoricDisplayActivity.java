@@ -21,44 +21,14 @@ public class HistoricDisplayActivity extends AppCompatActivity {
         initLists();
     }
 
-    //TEST: méthode permettant de remplir les ArrayList -- DOIT ETRE EFFACE DANS LE PROJET FINAL
+    //TEST: méthode permettant de remplir le listitem pour le recycler view -- DOIT ETRE EFFACE DANS LE PROJET FINAL
     private void initLists() {
 
-        mDays.add("premier");
-        mBackgroundColor.add(0xFF000000);
+        mDays.add("TEST" + 1);
+        mBackgroundColor.add(0xFF55116B);
 
-        mDays.add("deuxième");
-        mBackgroundColor.add(0xFF222222);
-
-        mDays.add("troisième");
-        mBackgroundColor.add(0xFF444444);
-
-        mDays.add("quatrième");
-        mBackgroundColor.add(0xFF666666);
-
-        mDays.add("cinquième");
-        mBackgroundColor.add(0xFF888888);
-
-        mDays.add("sixième");
-        mBackgroundColor.add(0xFFAAAAAA);
-
-        mDays.add("septième");
-        mBackgroundColor.add(0xFFCCCCCC);
-
-        mDays.add("septième");
-        mBackgroundColor.add(0xFFCCAACC);
-
-        mDays.add("septième");
-        mBackgroundColor.add(0xFFCCCC99);
-
-        mDays.add("septième");
-        mBackgroundColor.add(0xFFDDCCCC);
-
-        mDays.add("septième");
-        mBackgroundColor.add(0xFF123456);
-
-        mDays.add("septième");
-        mBackgroundColor.add(0xFF654321);
+        mDays.add("TEST" + 2);
+        mBackgroundColor.add(0xFF55100B);
 
         initRecyclerView();
     }

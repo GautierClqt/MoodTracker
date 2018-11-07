@@ -6,23 +6,24 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import java.util.Date;
 
 public class MoodSelectActivity extends AppCompatActivity implements CommentDialog.CommentDialogListener {
 
     private RelativeLayout mLayout;
     private Drawable[] moodList = new Drawable[5];
     private TextView mDisplayComment;
-    private Button mAddMood; //TEST -- NE FAIT PAS PARTI DU PRODUIT FINAL
     private int moodIndex;
-    private String commentPreferences;
+    public String commentPreferences;
     private int backgroundColor;
-    private SharedPreferences preferences;
+    public SharedPreferences preferences;
+    private String mComment;
+    private Date mDate;
 
-    Mood mood = new Mood();
+    Mood mood = new Mood(moodIndex, mComment, mDate);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,6 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         mDisplayComment = findViewById(R.id.activity_mood_select_comment_textview);
         mLayout = findViewById(R.id.activity_mood_select_layout_layout);
         mDisplayHistoricActivity = findViewById(R.id.activity_mood_select_display_historic_image);
-        mAddMood = findViewById(R.id.activity_mood_select_add_mood_button); //TEST -- NE FAIT PAS PARTI DU PRODUIT FINAL
 
         mDisplayComment.setText(commentPreferences);
 
@@ -90,15 +90,6 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
                 startActivity(historicActivityIntent);
             }
         });
-
-        //TEST -- NE FAIT PAS PARTI DU PRODUIT FINAL
-        //Ajoute l'humeur et le commentaire sélectionné à l'arraylist pour l'historique
-        mAddMood.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
     public void openDialog() {
@@ -106,6 +97,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         commentDialog.show(getSupportFragmentManager(), "comment dialog");
     }
 
+    //NE FAIT PAS PARTI DU PRODUIT FINAL -- DOIT ETRE REECRI/EFFACE
     //display and save(preferences) the written comment
     @Override
     public void getComment(String comment) {
