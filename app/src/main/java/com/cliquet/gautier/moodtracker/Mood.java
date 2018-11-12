@@ -1,20 +1,46 @@
 package com.cliquet.gautier.moodtracker;
 
 import android.graphics.Color;
-import java.util.Date;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Mood {
 
     private int mIndexMood;
     private String mComment;
-    private Date mDate;
+    private Calendar mDate;
 
-    public Mood(int mIndexMood, String mComment, Date mDate) {
+    private ArrayList<Mood> MoodList = new ArrayList<>();
+
+    public Mood(int mIndexMood, String mComment, Calendar mDate) {
         this.mIndexMood = mIndexMood;
         this.mComment = mComment;
         this.mDate = mDate;
     }
+
+    public int getmIndexMood() {
+        return mIndexMood;
+    }
+
+    public void setmIndexMood(int mIndexMood) {
+        mIndexMood = this.setMoodIndex(mIndexMood);
+        this.mIndexMood = mIndexMood;
+    }
+
+    public String getmComment() {
+        return mComment;
+    }
+
+    public void setmComment(String mComment) {
+        this.mComment = mComment;
+    }
+
+    public Calendar getmDate() {
+        mDate = mDate.getInstance();
+        return mDate;
+    }
+
 
     public int setMoodIndex(int mMoodPosition) {
         if (mMoodPosition >= 0 && mMoodPosition < 4) {
@@ -44,5 +70,9 @@ public class Mood {
         }
 
         return mBackgroundColor;
+    }
+
+    public void addPreferencesToList() {
+        MoodList.add(new Mood(mIndexMood, mComment, mDate));
     }
 }
