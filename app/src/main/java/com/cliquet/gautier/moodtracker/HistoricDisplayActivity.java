@@ -6,12 +6,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class HistoricDisplayActivity extends AppCompatActivity {
 
     //variables
     private ArrayList<String> mDays = new ArrayList<>();
-    private ArrayList<Integer> mBackgroundColor = new ArrayList<>();
+    private ArrayList<Integer> mBackgroundColorList = new ArrayList<>();
+    private ArrayList<String> mWithComment = new ArrayList<>();
+
+    private int mBackgroundColor;
+    Random rand = new Random();
+    Mood mood = new Mood();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,18 +30,19 @@ public class HistoricDisplayActivity extends AppCompatActivity {
     //TEST: méthode permettant de remplir le listitem pour le recycler view -- DOIT ETRE EFFACE DANS LE PROJET FINAL
     private void initLists() {
 
-        mDays.add("TEST" + 1);
-        mBackgroundColor.add(0xFF55116B);
-
-        mDays.add("TEST" + 2);
-        mBackgroundColor.add(0xFF55100B);
+        for(int i = 0; i < 7; i++) {
+            mDays.add("Texte" + " " + i);
+            mBackgroundColor = rand.nextInt(5);
+            mBackgroundColor = mood.changeBackgroundColor(mBackgroundColor);
+            mBackgroundColorList.add(mBackgroundColor);
+        }
 
         initRecyclerView();
     }
 
     private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.activity_historic_recycler);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mDays, mBackgroundColor);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mDays, mBackgroundColorList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

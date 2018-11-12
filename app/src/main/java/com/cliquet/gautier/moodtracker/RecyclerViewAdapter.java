@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -36,7 +37,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
 
         viewHolder.historicText.setText(mSinceWhen.get(i));
-        viewHolder.historicParentLayout.setBackgroundColor(mBackgroundColor.get(i));
+        viewHolder.historicText.setBackgroundColor(mBackgroundColor.get(i));
     }
 
     @Override
@@ -46,14 +47,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        RelativeLayout historicParentLayout;
+        LinearLayout historicParentLayout;
         TextView historicText;
         ImageView historicCommentImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            historicParentLayout = itemView.findViewById(R.id.layout_historic_listitem_parentlayout_layout);
+            historicText = itemView.findViewById(R.id.layout_historic_listitem_sincewhen_text);
             historicText = itemView.findViewById(R.id.layout_historic_listitem_sincewhen_text);
             historicCommentImage = itemView.findViewById(R.id.layout_historic_listitem_attachedcomment_image);
         }

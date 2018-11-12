@@ -19,6 +19,10 @@ public class Mood {
         this.mDate = mDate;
     }
 
+    public Mood() {
+
+    }
+
     public int getmIndexMood() {
         return mIndexMood;
     }
