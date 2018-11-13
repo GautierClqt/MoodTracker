@@ -11,13 +11,17 @@ import java.util.Random;
 public class HistoricDisplayActivity extends AppCompatActivity {
 
     //variables
-    private ArrayList<String> mDays = new ArrayList<>();
+    private ArrayList<String> mDaysList = new ArrayList<>();
     private ArrayList<Integer> mBackgroundColorList = new ArrayList<>();
+    private ArrayList<Integer> mTextviewWeightList = new ArrayList<>();
     private ArrayList<String> mWithComment = new ArrayList<>();
 
     private int mBackgroundColor;
+    private int mTextviewWeight;
+    private String mDays;
     Random rand = new Random();
     Mood mood = new Mood();
+    Utils util = new Utils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +34,14 @@ public class HistoricDisplayActivity extends AppCompatActivity {
     //TEST: méthode permettant de remplir le listitem pour le recycler view -- DOIT ETRE EFFACE DANS LE PROJET FINAL
     private void initLists() {
 
-        for(int i = 0; i < 7; i++) {
-            mDays.add("Texte" + " " + i);
+        for(int i = 6; i >= 0; i--) {
+            mDays = util.historicDayPast(i);
+            mDaysList.add(mDays);
             mBackgroundColor = rand.nextInt(5);
+            mTextviewWeight = mBackgroundColor;
             mBackgroundColor = mood.changeBackgroundColor(mBackgroundColor);
             mBackgroundColorList.add(mBackgroundColor);
+            mTextviewWeightList.add(mTextviewWeight);
         }
 
         initRecyclerView();
@@ -42,7 +49,7 @@ public class HistoricDisplayActivity extends AppCompatActivity {
 
     private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.activity_historic_recycler);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mDays, mBackgroundColorList);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mDaysList, mBackgroundColorList, mTextviewWeightList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

@@ -1,5 +1,6 @@
 package com.cliquet.gautier.moodtracker;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -18,11 +19,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Context mContext;
     private ArrayList<String> mSinceWhen;
     private ArrayList<Integer> mBackgroundColor;
+    private ArrayList<Integer> mDynamicWeight;
 
-    public RecyclerViewAdapter(Context mContext, ArrayList<String> mSinceWhen, ArrayList<Integer> mBackgroundColor) {
+    public RecyclerViewAdapter(Context mContext, ArrayList<String> mSinceWhen, ArrayList<Integer> mBackgroundColor, ArrayList<Integer> mDynamicWeight) {
         this.mContext = mContext;
         this.mSinceWhen = mSinceWhen;
         this.mBackgroundColor = mBackgroundColor;
+        this.mDynamicWeight = mDynamicWeight;
     }
 
     @NonNull
@@ -38,6 +41,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         viewHolder.historicText.setText(mSinceWhen.get(i));
         viewHolder.historicText.setBackgroundColor(mBackgroundColor.get(i));
+
+        float f = mDynamicWeight.get(i);
+
+        LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                4-f
+        );
+
+        LinearLayout.LayoutParams param2 = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                1+f
+        );
+        viewHolder.historicText.setLayoutParams(param1);
+        viewHolder.blankText.setLayoutParams(param2);
     }
 
     @Override
@@ -47,15 +66,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        LinearLayout historicParentLayout;
         TextView historicText;
+        TextView blankText;
         ImageView historicCommentImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             historicText = itemView.findViewById(R.id.layout_historic_listitem_sincewhen_text);
-            historicText = itemView.findViewById(R.id.layout_historic_listitem_sincewhen_text);
+            blankText = itemView.findViewById(R.id.layout_historic_listitem_blanktextview_text);
             historicCommentImage = itemView.findViewById(R.id.layout_historic_listitem_attachedcomment_image);
         }
     }
