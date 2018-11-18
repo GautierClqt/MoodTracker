@@ -22,12 +22,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ArrayList<String> mSinceWhen;
     private ArrayList<Integer> mBackgroundColor;
     private ArrayList<Integer> mDynamicWeight;
+    private ArrayList<String> mComment;
 
-    public RecyclerViewAdapter(Context mContext, ArrayList<String> mSinceWhen, ArrayList<Integer> mBackgroundColor, ArrayList<Integer> mDynamicWeight) {
+    public RecyclerViewAdapter(Context mContext, ArrayList<String> mSinceWhen, ArrayList<Integer> mBackgroundColor, ArrayList<Integer> mDynamicWeight, ArrayList<String> mComment) {
         this.mContext = mContext;
         this.mSinceWhen = mSinceWhen;
         this.mBackgroundColor = mBackgroundColor;
         this.mDynamicWeight = mDynamicWeight;
+        this.mComment = mComment;
     }
 
     @NonNull
@@ -41,22 +43,33 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
 
+        String test;
+        test = mComment.get(i);
+        if(test == "") {
+            viewHolder.historicCommentImage.setVisibility(View.GONE);
+        }
+        else {
+            viewHolder.historicCommentImage.setVisibility(View.VISIBLE);
+        }
+
         viewHolder.historicText.setText(mSinceWhen.get(i));
         viewHolder.historicText.setBackgroundColor(mBackgroundColor.get(i));
 
+        //param1 and param2 are used to dynamically change the textviews layout in order to reflect correct width
         float textViewWeight = mDynamicWeight.get(i);
+
         LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
+                0,
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 4-textViewWeight
         );
 
         LinearLayout.LayoutParams param2 = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
+                0,
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 1+textViewWeight
         );
-        viewHolder.historicText.setLayoutParams(param1);
+        viewHolder.mainLayout.setLayoutParams(param1);
         viewHolder.blankText.setLayoutParams(param2);
 
         viewHolder.historicCommentImage.setOnClickListener(new View.OnClickListener() {
@@ -77,10 +90,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView historicText;
         TextView blankText;
         ImageView historicCommentImage;
+        RelativeLayout mainLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            mainLayout = itemView.findViewById(R.id.layout_historic_listitem_parentlayout_layout);
             historicText = itemView.findViewById(R.id.layout_historic_listitem_sincewhen_text);
             blankText = itemView.findViewById(R.id.layout_historic_listitem_blanktextview_text);
             historicCommentImage = itemView.findViewById(R.id.layout_historic_listitem_attachedcomment_image);

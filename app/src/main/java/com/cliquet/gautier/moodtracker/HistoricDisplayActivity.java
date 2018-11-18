@@ -59,7 +59,7 @@ public class HistoricDisplayActivity extends AppCompatActivity {
 
     private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.activity_historic_recycler);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mDaysList, mBackgroundColorList, mTextviewWeightList);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mDaysList, mBackgroundColorList, mTextviewWeightList, mCommentList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
