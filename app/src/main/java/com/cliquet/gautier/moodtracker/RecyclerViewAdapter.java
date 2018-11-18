@@ -1,6 +1,7 @@
 package com.cliquet.gautier.moodtracker;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -37,26 +39,32 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
 
         viewHolder.historicText.setText(mSinceWhen.get(i));
         viewHolder.historicText.setBackgroundColor(mBackgroundColor.get(i));
 
-        float f = mDynamicWeight.get(i);
-
+        float textViewWeight = mDynamicWeight.get(i);
         LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                4-f
+                4-textViewWeight
         );
 
         LinearLayout.LayoutParams param2 = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                1+f
+                1+textViewWeight
         );
         viewHolder.historicText.setLayoutParams(param1);
         viewHolder.blankText.setLayoutParams(param2);
+
+        viewHolder.historicCommentImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext,"test " + i, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override

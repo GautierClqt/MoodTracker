@@ -14,11 +14,13 @@ public class HistoricDisplayActivity extends AppCompatActivity {
     private ArrayList<String> mDaysList = new ArrayList<>();
     private ArrayList<Integer> mBackgroundColorList = new ArrayList<>();
     private ArrayList<Integer> mTextviewWeightList = new ArrayList<>();
-    private ArrayList<String> mWithComment = new ArrayList<>();
+    private ArrayList<String> mCommentList = new ArrayList<>();
 
     private int mBackgroundColor;
     private int mTextviewWeight;
     private String mDays;
+    private boolean isCommentTrue;
+    private String mComment;
     Random rand = new Random();
     Mood mood = new Mood();
     Utils util = new Utils();
@@ -35,6 +37,14 @@ public class HistoricDisplayActivity extends AppCompatActivity {
     private void initLists() {
 
         for(int i = 6; i >= 0; i--) {
+            isCommentTrue = rand.nextBoolean();
+            if(isCommentTrue) {
+                mComment = "Bonjour";
+            }
+            else {
+                mComment = "";
+            }
+            mCommentList.add(mComment);
             mDays = util.historicDayPast(i);
             mDaysList.add(mDays);
             mBackgroundColor = rand.nextInt(5);
