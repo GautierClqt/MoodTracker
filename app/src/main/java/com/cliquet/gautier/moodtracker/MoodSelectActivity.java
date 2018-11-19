@@ -6,9 +6,12 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,7 +20,7 @@ import java.util.Calendar;
 public class MoodSelectActivity extends AppCompatActivity implements CommentDialog.CommentDialogListener {
 
     private int moodIndex;
-    private String mComment;
+    protected String mComment;
     private Calendar mDate;
     private int mDayOfMonth;
     private boolean mNewDay;
@@ -31,8 +34,10 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
 
     Mood mood = new Mood(moodIndex, mComment, mDate);
     Utils util = new Utils();
+    Gson gson = new Gson();
 
     private ArrayList<Mood> MoodList = new ArrayList<>();
+    String jsonMood;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +53,25 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         moodIndex = getPreferences(MODE_PRIVATE).getInt("mood_index", 2);
         mComment = getPreferences(MODE_PRIVATE).getString("comment", "");
 
+        //get json type converted mood to Mood object type
+        jsonMood = preferences.getString("Moods", null);
+        MoodList = gson.fromJson(jsonMood, ArrayList.class);
+
+        mood.setMoodList(MoodList);
+
+
         //connecting the views
         final ImageView mDisplayedMood;
         final ImageView mAddComment;
         final ImageView mDisplayHistoricActivity;
+        final Button mAddMood;
 
         mDisplayedMood = findViewById(R.id.activity_mood_select_placeholder_image);
         mAddComment = findViewById(R.id.activity_add_comment_image);
         mDisplayComment = findViewById(R.id.activity_mood_select_comment_textview); //NE FAIT PAS PARTI DU PRODUIT FINAL
         mLayout = findViewById(R.id.activity_mood_select_layout_layout);
         mDisplayHistoricActivity = findViewById(R.id.activity_mood_select_display_historic_image);
+        mAddMood = findViewById(R.id.activity_mood_select_addmood_button); //NE FAIT PAS PARTI DU PRODUIT FINAL
 
         mDisplayComment.setText(mComment);
 
@@ -107,6 +121,16 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
                 startActivity(historicActivityIntent);
             }
         });
+
+        //NE FAIT PAS PARTI DU PRODUIT FINAL -- Bouton simulant l'ajout de mood pour l'historique
+        mAddMood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MoodList.add(new Mood(moodIndex, mComment, mDate));
+                jsonMood = gson.toJson(MoodList);
+                preferences.edit().putString("Moods", jsonMood).apply();
+            }
+        });
     }
 
     public void openDialog() {
@@ -116,15 +140,12 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
 
     //display and save(preferences) the written comment
     @Override
-    public void getComment(String mComment) {
+    public void getComment(String DialogComment) {
+        mComment = DialogComment;
         mDisplayComment.setText(mComment); //NE FAIT PAS PARTI DU PRODUIT FINAL
         mood.setmComment(mComment);
+        mComment = mood.getmComment();
         preferences.edit().putString("comment", mComment).apply();
-    }
-
-    //add current preferences to the ArrayList
-    public void addPreferencesToList () {
-
     }
 }
 

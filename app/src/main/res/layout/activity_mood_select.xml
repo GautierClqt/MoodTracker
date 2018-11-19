@@ -44,4 +44,12 @@
         android:layout_marginBottom="24dp"
         app:srcCompat="@drawable/ic_history_black" />
 
+    <Button
+        android:id="@+id/activity_mood_select_addmood_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="ajouter"/>
+
 </RelativeLayout>

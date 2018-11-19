@@ -16,6 +16,7 @@ public class HistoricDisplayActivity extends AppCompatActivity {
     private ArrayList<Integer> mTextviewWeightList = new ArrayList<>();
     private ArrayList<String> mCommentList = new ArrayList<>();
 
+
     private int mBackgroundColor;
     private int mTextviewWeight;
     private String mDays;
@@ -30,11 +31,19 @@ public class HistoricDisplayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historic_display);
 
-        initLists();
+        initMoodHistoryList();
+        //initTestLists();
     }
 
-    //TEST: méthode permettant de remplir le listitem pour le recycler view -- DOIT ETRE EFFACE DANS LE PROJET FINAL
-    private void initLists() {
+    //get the moods ArrayList to fill up the history RecyclerView
+    private void initMoodHistoryList() {
+        ArrayList<Mood> MoodList = new ArrayList<>();
+        MoodList = mood.getMoodList();
+        initRecyclerView();
+    }
+
+    //TEST: méthode permettant de remplir le listitem pour le recycler view -- DOIT ETRE EFFACE DANS LE PROJET FINAL, initMoodHistoryList est la véritable méthode à utiliser
+    private void initTestLists() {
 
         for(int i = 6; i >= 0; i--) {
             isCommentTrue = rand.nextBoolean();

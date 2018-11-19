@@ -11,7 +11,7 @@ public class Mood {
     private String mComment;
     private Calendar mDate;
 
-    private ArrayList<Mood> MoodList = new ArrayList<>();
+    private ArrayList<Mood> mMoodList = new ArrayList<>();
 
     public Mood(int mIndexMood, String mComment, Calendar mDate) {
         this.mIndexMood = mIndexMood;
@@ -20,7 +20,6 @@ public class Mood {
     }
 
     public Mood() {
-
     }
 
     public int getmIndexMood() {
@@ -76,7 +75,12 @@ public class Mood {
         return mBackgroundColor;
     }
 
-    public void addPreferencesToList() {
-        MoodList.add(new Mood(mIndexMood, mComment, mDate));
+    //set the ArrayList to get saved(preferences) mood objects, used mainly for historic
+    public void setMoodList(ArrayList<Mood> mMoodList) {
+        this.mMoodList = mMoodList;
+    }
+
+    public ArrayList getMoodList() {
+        return mMoodList;
     }
 }
