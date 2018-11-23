@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,9 +14,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 
 public class MoodSelectActivity extends AppCompatActivity implements CommentDialog.CommentDialogListener {
@@ -24,6 +28,9 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
     private Calendar mDate;
     private int mDayOfMonth;
     private boolean mNewDay;
+    private boolean mSwipeUp;
+
+
 
     private RelativeLayout mLayout;
     private TextView mDisplayComment; //NE FAIT PAS PARTI DU PRODUIT FINAL
@@ -50,12 +57,12 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         mNewDay = util.compareDate(mDayOfMonth);
 
         //if there's no preferences normal mood is display by default
-        moodIndex = getPreferences(MODE_PRIVATE).getInt("mood_index", 2);
+        moodIndex = getPreferences(MODE_PRIVATE).getInt("mood_index", 3);
         mComment = getPreferences(MODE_PRIVATE).getString("comment", "");
 
         //get json type converted mood to Mood object type
         jsonMood = preferences.getString("Moods", null);
-        MoodList = gson.fromJson(jsonMood, ArrayList.class);
+        MoodList = gson.fromJson(jsonMood, new TypeToken<List<Mood>>(){}.getType());
 
         mood.setMoodList(MoodList);
 
@@ -87,26 +94,57 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         backgroundColor = mood.changeBackgroundColor(moodIndex);
         mLayout.setBackgroundColor(backgroundColor);
 
-        //at each click on the ImageView moods and the layout background colors are cycle through(worst to best)
-        mDisplayedMood.setOnClickListener(new View.OnClickListener() {
+        //mDisplayedMood.setOnTouchListener(new GestureDetector.OnGestureListener(){
+
+        //handle the mood up and down swapping
+        mDisplayedMood.setOnTouchListener(new View.OnTouchListener() {
+            float y_up;
+            float y_down;
+            float y_difference;
+
             @Override
-            public void onClick(View v) {
-                //to correctly cycle through the moods, especially to go from super happy mood to sad mood
-                mood.setmIndexMood(moodIndex);
-                moodIndex = mood.getmIndexMood();
-                mDisplayedMood.setImageDrawable(moodList[moodIndex]);   //display the right mood
+            public boolean onTouch(View v, MotionEvent event) {
 
-                backgroundColor = mood.changeBackgroundColor(moodIndex);
-                mLayout.setBackgroundColor(backgroundColor);
+                //check if user gesture went upward or downward and put moodIndex in the correct position then display the right mood and backgroundcolor
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    y_down = event.getY();
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    y_up = event.getY();
 
-                preferences.edit().putInt("mood_index", moodIndex).apply();
+                    y_difference = Math.abs(y_down - y_up);
+                    if (y_down > y_up) {
+                        mSwipeUp = true;
+                    } else if (y_down < y_up) {
+                        mSwipeUp = false;
+                    }
 
-                mDate = mood.getmDate(); //get the current date and time(doesn't take account of winter hours)
-                mDayOfMonth = mDate.get(Calendar.DAY_OF_MONTH);
-                preferences.edit().putInt("date", mDayOfMonth).apply();
+                    if(y_difference > 100) {
+                        if (mSwipeUp == true && moodIndex < 4) {
+                            moodIndex++;
+                        } else if (mSwipeUp == false && moodIndex > 0) {
+                            moodIndex--;
+                        }
+
+                        mDisplayedMood.setImageDrawable(moodList[moodIndex]);
+                        backgroundColor = mood.changeBackgroundColor(moodIndex);
+                        mLayout.setBackgroundColor(backgroundColor);
+
+                        preferences.edit().putInt("mood_index", moodIndex).apply();
+
+                        mDate = mood.getmDate(); //get the current date and time(doesn't take account of winter time)
+                        mDayOfMonth = mDate.get(Calendar.DAY_OF_MONTH);
+                        preferences.edit().putInt("date", mDayOfMonth).apply();
+
+                        y_down = 0;
+                        y_up = 0;
+                    }
+                }
+                return true;
             }
         });
 
+        //call the comment dialog
         mAddComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,6 +152,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
             }
         });
 
+        //call the history activity
         mDisplayHistoricActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
