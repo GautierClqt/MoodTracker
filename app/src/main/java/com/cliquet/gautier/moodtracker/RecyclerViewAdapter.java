@@ -61,7 +61,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(
                 0,
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                4-textViewWeight
+                5-textViewWeight
         );
 
         LinearLayout.LayoutParams param2 = new LinearLayout.LayoutParams(

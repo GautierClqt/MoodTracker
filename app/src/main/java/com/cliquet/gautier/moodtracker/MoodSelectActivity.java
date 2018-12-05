@@ -1,11 +1,11 @@
 package com.cliquet.gautier.moodtracker;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -46,6 +46,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
     private ArrayList<Mood> MoodList = new ArrayList<>();
     String jsonMood;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,10 +60,14 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         //if there's no preferences normal mood is display by default
         moodIndex = getPreferences(MODE_PRIVATE).getInt("mood_index", 3);
         mComment = getPreferences(MODE_PRIVATE).getString("comment", "");
+        mDate = mDate.getInstance();
 
         //get json type converted mood to Mood object type
         jsonMood = preferences.getString("Moods", null);
-        MoodList = gson.fromJson(jsonMood, new TypeToken<List<Mood>>(){}.getType());
+        if(jsonMood != null) {
+            MoodList = gson.fromJson(jsonMood, new TypeToken<List<Mood>>(){}.getType());
+        }
+        else {}
 
         mood.setMoodList(MoodList);
 
@@ -120,9 +125,9 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
                     }
 
                     if(y_difference > 100) {
-                        if (mSwipeUp == true && moodIndex < 4) {
+                        if (mSwipeUp && moodIndex < 4) {
                             moodIndex++;
-                        } else if (mSwipeUp == false && moodIndex > 0) {
+                        } else if (!mSwipeUp && moodIndex > 0) {
                             moodIndex--;
                         }
 
