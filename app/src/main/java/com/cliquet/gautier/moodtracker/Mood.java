@@ -2,10 +2,11 @@ package com.cliquet.gautier.moodtracker;
 
 import android.graphics.Color;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Mood {
+public class Mood implements Serializable {
 
     private int mIndexMood;
     private String mComment;
@@ -71,7 +72,6 @@ public class Mood {
             case 4: mBackgroundColor = Color.parseColor("#fff9ec4f");
             break;
         }
-
         return mBackgroundColor;
     }
 

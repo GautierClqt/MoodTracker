@@ -21,11 +21,12 @@
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/layout_historic_listitem_attachedcomment_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="15dp"
-            android:layout_centerVertical="true"
+            android:layout_width="57dp"
+            android:layout_height="56dp"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="0dp"
+            android:padding="15dp"
             android:src="@drawable/ic_comment_black_48px" />
 
     </RelativeLayout>

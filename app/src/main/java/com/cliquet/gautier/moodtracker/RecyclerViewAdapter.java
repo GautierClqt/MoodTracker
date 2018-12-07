@@ -61,13 +61,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(
                 0,
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                5-textViewWeight
+                1+textViewWeight
         );
 
         LinearLayout.LayoutParams param2 = new LinearLayout.LayoutParams(
                 0,
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                1+textViewWeight
+                4-textViewWeight
         );
         viewHolder.mainLayout.setLayoutParams(param1);
         viewHolder.blankText.setLayoutParams(param2);
@@ -75,7 +75,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewHolder.historicCommentImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext,"test " + i, Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, mComment.get(i), Toast.LENGTH_LONG).show();
             }
         });
     }

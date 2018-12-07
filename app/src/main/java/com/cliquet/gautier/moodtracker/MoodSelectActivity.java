@@ -60,14 +60,13 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         //if there's no preferences normal mood is display by default
         moodIndex = getPreferences(MODE_PRIVATE).getInt("mood_index", 3);
         mComment = getPreferences(MODE_PRIVATE).getString("comment", "");
-        mDate = mDate.getInstance();
+        //mDate = mDate.getInstance();
 
         //get json type converted mood to Mood object type
         jsonMood = preferences.getString("Moods", null);
         if(jsonMood != null) {
             MoodList = gson.fromJson(jsonMood, new TypeToken<List<Mood>>(){}.getType());
         }
-        else {}
 
         mood.setMoodList(MoodList);
 
@@ -162,6 +161,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
             @Override
             public void onClick(View v) {
                 Intent historicActivityIntent = new Intent(MoodSelectActivity.this, HistoricDisplayActivity.class);
+                historicActivityIntent.putExtra("List_Of_Moods", MoodList);
                 startActivity(historicActivityIntent);
             }
         });
@@ -170,7 +170,14 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         mAddMood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MoodList.add(new Mood(moodIndex, mComment, mDate));
+
+                if(MoodList.size() < 7) {
+                    MoodList.add(new Mood(moodIndex, mComment, mDate));
+                }
+                if(MoodList.size() >= 7) {
+                    MoodList.add(new Mood(moodIndex, mComment, mDate));
+                    MoodList.remove(0);
+                }
                 jsonMood = gson.toJson(MoodList);
                 preferences.edit().putString("Moods", jsonMood).apply();
             }
