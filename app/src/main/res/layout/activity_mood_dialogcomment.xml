@@ -10,6 +10,6 @@
         android:id="@+id/activity_mood_dialogcomment_comment_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Ecrivez-votre commentaire ici."/>
+        android:hint="Ecrivez-votre commentaire ici." />
 
 </LinearLayout>

@@ -1,17 +1,25 @@
 package com.cliquet.gautier.moodtracker;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class Utils {
 
-    private Calendar date = Calendar.getInstance();
-    private int newDay;
+    //private Calendar calendar = Calendar.getInstance();
+    private int newDayOfYear;
+    private int newYear;
+    private Calendar newDate = Calendar.getInstance();
+    private int oldDayOfYear;
+    private int oldYear;
     private boolean isANewDay;
 
-    public boolean compareDate(int currentDay) {
-        newDay = date.get(Calendar.DAY_OF_MONTH);
+    public boolean compareDate(Calendar oldDate) {
+        newDayOfYear = newDate.get(Calendar.DAY_OF_YEAR);
+        newYear = newDate.get(Calendar.YEAR);
+        oldDayOfYear = oldDate.get(Calendar.DAY_OF_YEAR);
+        oldYear = oldDate.get(Calendar.YEAR);
 
-        if(currentDay == newDay) {
+        if(oldDayOfYear == newDayOfYear || oldYear == newYear) {
             isANewDay = false;
         }
         else {

@@ -18,6 +18,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -26,11 +27,10 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
     private int moodIndex;
     protected String mComment;
     private Calendar mDate;
+    private Date savedDate;
     private int mDayOfMonth;
-    private boolean mNewDay;
+    private boolean isANewDay;
     private boolean mSwipeUp;
-
-
 
     private RelativeLayout mLayout;
     private TextView mDisplayComment; //NE FAIT PAS PARTI DU PRODUIT FINAL
@@ -54,9 +54,6 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
 
         preferences = getPreferences(MODE_PRIVATE);
 
-        //compare days of month to know if this is a new day
-        mNewDay = util.compareDate(mDayOfMonth);
-
         //if there's no preferences normal mood is display by default
         moodIndex = getPreferences(MODE_PRIVATE).getInt("mood_index", 3);
         mComment = getPreferences(MODE_PRIVATE).getString("comment", "");
@@ -70,6 +67,21 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
 
         mood.setMoodList(MoodList);
 
+        //compare days of month to know if this is a new day
+        mDate = Calendar.getInstance();
+        isANewDay = util.compareDate(mDate);
+
+//        if(isANewDay) {
+//            if(MoodList.size() < 7) {
+//                MoodList.add(new Mood(moodIndex, mComment, mDate));
+//            }
+//            if(MoodList.size() >= 7) {
+//                MoodList.add(new Mood(moodIndex, mComment, mDate));
+//                MoodList.remove(0);
+//            }
+//            jsonMood = gson.toJson(MoodList);
+//            preferences.edit().putString("Moods", jsonMood).apply();
+//        }
 
         //connecting the views
         final ImageView mDisplayedMood;
@@ -197,6 +209,11 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         mood.setmComment(mComment);
         mComment = mood.getmComment();
         preferences.edit().putString("comment", mComment).apply();
+    }
+
+    @Override
+    protected void OnResume() {
+        super.onResume();
     }
 }
 

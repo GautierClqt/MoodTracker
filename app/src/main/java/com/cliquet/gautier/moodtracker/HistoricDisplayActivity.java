@@ -13,7 +13,7 @@ public class HistoricDisplayActivity extends AppCompatActivity {
     //variables
     private ArrayList<String> mDateList = new ArrayList<>();
     private ArrayList<Integer> mBackgroundColorList = new ArrayList<>();
-    private ArrayList<Integer> mTextviewWeightList = new ArrayList<>();
+    private ArrayList<Integer> mTextViewWeightList = new ArrayList<>();
     private ArrayList<String> mCommentList = new ArrayList<>();
 
 
@@ -47,7 +47,7 @@ public class HistoricDisplayActivity extends AppCompatActivity {
             //mBackgroundColor = MoodList.get(i).getmIndexMood();
             mBackgroundColor = mood.changeBackgroundColor(MoodList.get(i).getmIndexMood());
             mBackgroundColorList.add(mBackgroundColor);
-            mTextviewWeightList.add(MoodList.get(i).getmIndexMood());
+            mTextViewWeightList.add(MoodList.get(i).getmIndexMood());
         }
         initRecyclerView();
     }
@@ -78,7 +78,7 @@ public class HistoricDisplayActivity extends AppCompatActivity {
 
     private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.activity_historic_recycler);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mDateList, mBackgroundColorList, mTextviewWeightList, mCommentList);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mDateList, mBackgroundColorList, mTextViewWeightList, mCommentList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

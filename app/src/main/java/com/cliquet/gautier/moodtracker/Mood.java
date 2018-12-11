@@ -83,4 +83,5 @@ public class Mood implements Serializable {
     public ArrayList getMoodList() {
         return mMoodList;
     }
+
 }
