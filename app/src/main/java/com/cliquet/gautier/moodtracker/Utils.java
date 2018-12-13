@@ -49,4 +49,22 @@ public class Utils {
         }
         return sinceWhen;
     }
+
+    public String moodSendMessage(int moodIndex) {
+        String moodMessage = "";
+
+        switch (moodIndex) {
+            case 0: moodMessage = "d'excellente d'humeur :D";
+                break;
+            case 1: moodMessage = "de bonne humeur :)";
+                break;
+            case 2: moodMessage = "d'humeur normale :|";
+                break;
+            case 3: moodMessage = "de mauvaise humeur :/";
+                break;
+            case 4: moodMessage = "d'humeur excécrable :(";
+                break;
+        }
+        return moodMessage;
+    }
 }

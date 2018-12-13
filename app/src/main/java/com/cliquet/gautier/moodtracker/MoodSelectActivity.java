@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -27,7 +28,6 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
     private int moodIndex;
     protected String mComment;
     private Calendar mDate;
-    private Date savedDate;
     private int mDayOfMonth;
     private boolean isANewDay;
     private boolean mSwipeUp;
@@ -46,6 +46,8 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
     private ArrayList<Mood> MoodList = new ArrayList<>();
     String jsonMood;
 
+    public ImageView mDisplayedMood;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,6 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         //if there's no preferences normal mood is display by default
         moodIndex = getPreferences(MODE_PRIVATE).getInt("mood_index", 3);
         mComment = getPreferences(MODE_PRIVATE).getString("comment", "");
-        //mDate = mDate.getInstance();
 
         //get json type converted mood to Mood object type
         jsonMood = preferences.getString("Moods", null);
@@ -71,20 +72,21 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         mDate = Calendar.getInstance();
         isANewDay = util.compareDate(mDate);
 
-//        if(isANewDay) {
-//            if(MoodList.size() < 7) {
-//                MoodList.add(new Mood(moodIndex, mComment, mDate));
-//            }
-//            if(MoodList.size() >= 7) {
-//                MoodList.add(new Mood(moodIndex, mComment, mDate));
-//                MoodList.remove(0);
-//            }
-//            jsonMood = gson.toJson(MoodList);
-//            preferences.edit().putString("Moods", jsonMood).apply();
-//        }
+        if (isANewDay) {
+            if (MoodList.size() < 7) {
+                MoodList.add(new Mood(moodIndex, mComment, mDate));
+            }
+            if (MoodList.size() >= 7) {
+                MoodList.add(new Mood(moodIndex, mComment, mDate));
+                MoodList.remove(0);
+            }
+            jsonMood = gson.toJson(MoodList);
+            preferences.edit().putString("Moods", jsonMood).apply();
+        }
+
 
         //connecting the views
-        final ImageView mDisplayedMood;
+        //final ImageView mDisplayedMood;
         final ImageView mAddComment;
         final ImageView mDisplayHistoricActivity;
         final Button mAddMood;
@@ -179,19 +181,29 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         });
 
         //NE FAIT PAS PARTI DU PRODUIT FINAL -- Bouton simulant l'ajout de mood pour l'historique
+//        mAddMood.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                if(MoodList.size() < 7) {
+//                    MoodList.add(new Mood(moodIndex, mComment, mDate));
+//                }
+//                if(MoodList.size() >= 7) {
+//                    MoodList.add(new Mood(moodIndex, mComment, mDate));
+//                    MoodList.remove(0);
+//                }
+//                jsonMood = gson.toJson(MoodList);
+//                preferences.edit().putString("Moods", jsonMood).apply();
+//            }
+//        });
+
         mAddMood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(MoodList.size() < 7) {
-                    MoodList.add(new Mood(moodIndex, mComment, mDate));
-                }
-                if(MoodList.size() >= 7) {
-                    MoodList.add(new Mood(moodIndex, mComment, mDate));
-                    MoodList.remove(0);
-                }
-                jsonMood = gson.toJson(MoodList);
-                preferences.edit().putString("Moods", jsonMood).apply();
+                String moodMessage = util.moodSendMessage(moodIndex);
+                Intent smsIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:"));
+                smsIntent.putExtra("sms_body", "Aujourd'hui je suis\b" + moodMessage);
+                startActivity(smsIntent);
             }
         });
     }
@@ -211,9 +223,44 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         preferences.edit().putString("comment", mComment).apply();
     }
 
-    @Override
-    protected void OnResume() {
+    //Check if it's a new day during while resuming activity
+    protected void onResume() {
         super.onResume();
+
+        mDate = Calendar.getInstance();
+        isANewDay = util.compareDate(mDate);
+
+        if(isANewDay) {
+            if(MoodList.size() < 7) {
+                MoodList.add(new Mood(moodIndex, mComment, mDate));
+            }
+            if(MoodList.size() >= 7) {
+                MoodList.add(new Mood(moodIndex, mComment, mDate));
+                MoodList.remove(0);
+            }
+            jsonMood = gson.toJson(MoodList);
+            preferences.edit().putString("Moods", jsonMood).apply();
+        }
+    }
+
+    //Check if it's a new day during while pausing activity
+    protected void onPause() {
+        super.onPause();
+
+        mDate = Calendar.getInstance();
+        isANewDay = util.compareDate(mDate);
+
+        if(isANewDay) {
+            if(MoodList.size() < 7) {
+                MoodList.add(new Mood(moodIndex, mComment, mDate));
+            }
+            if(MoodList.size() >= 7) {
+                MoodList.add(new Mood(moodIndex, mComment, mDate));
+                MoodList.remove(0);
+            }
+            jsonMood = gson.toJson(MoodList);
+            preferences.edit().putString("Moods", jsonMood).apply();
+        }
     }
 }
 
