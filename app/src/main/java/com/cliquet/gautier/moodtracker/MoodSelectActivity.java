@@ -33,7 +33,6 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
     private boolean mSwipeUp;
 
     private RelativeLayout mLayout;
-    private TextView mDisplayComment; //NE FAIT PAS PARTI DU PRODUIT FINAL
 
     private Drawable[] moodList = new Drawable[5];
     private SharedPreferences preferences;
@@ -86,19 +85,15 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
 
 
         //connecting the views
-        //final ImageView mDisplayedMood;
         final ImageView mAddComment;
         final ImageView mDisplayHistoricActivity;
-        final Button mAddMood;
+        final ImageView mSendMessage;
 
         mDisplayedMood = findViewById(R.id.activity_mood_select_placeholder_image);
         mAddComment = findViewById(R.id.activity_add_comment_image);
-        mDisplayComment = findViewById(R.id.activity_mood_select_comment_textview); //NE FAIT PAS PARTI DU PRODUIT FINAL
         mLayout = findViewById(R.id.activity_mood_select_layout_layout);
         mDisplayHistoricActivity = findViewById(R.id.activity_mood_select_display_historic_image);
-        mAddMood = findViewById(R.id.activity_mood_select_addmood_button); //NE FAIT PAS PARTI DU PRODUIT FINAL
-
-        mDisplayComment.setText(mComment);
+        mSendMessage = findViewById(R.id.activity_mood_select_sendmessage_image);
 
         //all five moods' images are stored in moodList
         moodList[0] = getResources().getDrawable(R.drawable.smiley_sad);
@@ -197,7 +192,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
 //            }
 //        });
 
-        mAddMood.setOnClickListener(new View.OnClickListener() {
+        mSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String moodMessage = util.moodSendMessage(moodIndex);
@@ -217,7 +212,6 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
     @Override
     public void getComment(String DialogComment) {
         mComment = DialogComment;
-        mDisplayComment.setText(mComment); //NE FAIT PAS PARTI DU PRODUIT FINAL
         mood.setmComment(mComment);
         mComment = mood.getmComment();
         preferences.edit().putString("comment", mComment).apply();

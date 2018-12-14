@@ -1,7 +1,11 @@
 package com.cliquet.gautier.moodtracker;
 
+import com.github.marlonlom.utilities.timeago.TimeAgo;
+import com.github.marlonlom.utilities.timeago.TimeAgoMessages;
+
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class Utils {
 
@@ -54,17 +58,26 @@ public class Utils {
         String moodMessage = "";
 
         switch (moodIndex) {
-            case 0: moodMessage = "d'excellente d'humeur :D";
+            case 0: moodMessage = "d'humeur exécrable :(";
                 break;
-            case 1: moodMessage = "de bonne humeur :)";
+            case 1: moodMessage = "de mauvaise humeur :/";
                 break;
             case 2: moodMessage = "d'humeur normale :|";
                 break;
-            case 3: moodMessage = "de mauvaise humeur :/";
+            case 3: moodMessage = "de bonne humeur :)";
                 break;
-            case 4: moodMessage = "d'humeur excécrable :(";
+            case 4: moodMessage = "d'excellente humeur :D";
                 break;
         }
         return moodMessage;
+    }
+
+    public String timeAgo() {
+        long timeInMillis = System.currentTimeMillis();
+        Locale LocaleBylanguageTag = Locale.forLanguageTag("fr");
+        TimeAgoMessages messages = new TimeAgoMessages.Builder().withLocale(LocaleBylanguageTag).build();
+        String timeAgoMessage = TimeAgo.using(timeInMillis, messages);
+
+        return timeAgoMessage;
     }
 }

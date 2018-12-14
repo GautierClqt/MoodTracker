@@ -15,15 +15,6 @@
         android:layout_height="250dp"
         android:layout_centerInParent="true" />
 
-    <TextView
-        android:id="@+id/activity_mood_select_comment_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="93dp"
-        android:text="Emplacement du commentaire." />
-
     <ImageView
         android:id="@+id/activity_add_comment_image"
         android:layout_width="40dp"
@@ -45,12 +36,13 @@
         android:layout_marginBottom="24dp"
         app:srcCompat="@drawable/ic_history_black" />
 
-    <Button
-        android:id="@+id/activity_mood_select_addmood_button"
+    <ImageView
+        android:id="@+id/activity_mood_select_sendmessage_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:text="ajouter"/>
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="24dp"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/message_icon" />
 
 </RelativeLayout>
