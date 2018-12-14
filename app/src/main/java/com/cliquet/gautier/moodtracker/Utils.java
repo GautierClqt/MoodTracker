@@ -9,27 +9,23 @@ import java.util.Locale;
 
 public class Utils {
 
-    //private Calendar calendar = Calendar.getInstance();
-    private int newDayOfYear;
-    private int newYear;
     private Calendar newDate = Calendar.getInstance();
-    private int oldDayOfYear;
-    private int oldYear;
-    private boolean isANewDay;
 
     public boolean compareDate(Calendar oldDate) {
-        newDayOfYear = newDate.get(Calendar.DAY_OF_YEAR);
-        newYear = newDate.get(Calendar.YEAR);
-        oldDayOfYear = oldDate.get(Calendar.DAY_OF_YEAR);
-        oldYear = oldDate.get(Calendar.YEAR);
+        //private Calendar calendar = Calendar.getInstance();
+        int mNewDayOfYear = newDate.get(Calendar.DAY_OF_YEAR);
+        int mNewYear = newDate.get(Calendar.YEAR);
+        int mOldDayOfYear = oldDate.get(Calendar.DAY_OF_YEAR);
+        int mOldYear = oldDate.get(Calendar.YEAR);
 
-        if(oldDayOfYear == newDayOfYear || oldYear == newYear) {
-            isANewDay = false;
+        boolean mIsANewDay;
+        if(mOldDayOfYear == mNewDayOfYear || mOldYear == mNewYear) {
+            mIsANewDay = false;
         }
         else {
-            isANewDay = true;
+            mIsANewDay = true;
         }
-        return isANewDay;
+        return mIsANewDay;
     }
 
     public String historicDayPast(int intDays) {
