@@ -12,18 +12,32 @@ public class Utils {
     private Calendar newDate = Calendar.getInstance();
 
     public boolean compareDate(Calendar oldDate) {
-        //private Calendar calendar = Calendar.getInstance();
         int mNewDayOfYear = newDate.get(Calendar.DAY_OF_YEAR);
         int mNewYear = newDate.get(Calendar.YEAR);
         int mOldDayOfYear = oldDate.get(Calendar.DAY_OF_YEAR);
         int mOldYear = oldDate.get(Calendar.YEAR);
 
-        boolean mIsANewDay;
-        if(mOldDayOfYear == mNewDayOfYear || mOldYear == mNewYear) {
-            mIsANewDay = false;
+        if(mOldDayOfYear != mNewDayOfYear || mOldYear != mNewYear) {
+            return true;
         }
         else {
+            return false;
+        }
+    }
+
+    //Méthode de test, ne fait pas parti du produit final!
+    public boolean testCompareDate(Calendar oldDate) {
+        int mNewDayOfYear = newDate.get(Calendar.MINUTE);
+        int mNewYear = newDate.get(Calendar.YEAR);
+        int mOldDayOfYear = oldDate.get(Calendar.MINUTE);
+        int mOldYear = oldDate.get(Calendar.YEAR);
+
+        boolean mIsANewDay;
+        if(mOldDayOfYear != mNewDayOfYear || mOldYear != mNewYear) {
             mIsANewDay = true;
+        }
+        else {
+            mIsANewDay = false;
         }
         return mIsANewDay;
     }

@@ -9,17 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 
@@ -28,7 +24,6 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
     private int moodIndex;
     protected String mComment;
     private Calendar mDate;
-    private int mDayOfMonth;
     private boolean isANewDay;
     private boolean mSwipeUp;
 
@@ -68,21 +63,28 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         mood.setMoodList(MoodList);
 
         //compare days of month to know if this is a new day
-        mDate = Calendar.getInstance();
+        if(mDate != null) {
+            mDate = mood.getmDate();
+            String jsonDate = gson.toJson(mDate);
+            mDate = gson.fromJson(jsonDate, new TypeToken<String>(){}.getType());
+        }
+        else {
+            mDate = Calendar.getInstance();
+            String jsonDate = gson.toJson(mDate);
+            mDate = gson.fromJson(jsonDate, Calendar.class);
+        }
         isANewDay = util.compareDate(mDate);
-
         if (isANewDay) {
-            if (MoodList.size() < 7) {
-                MoodList.add(new Mood(moodIndex, mComment, mDate));
-            }
+            MoodList.add(new Mood(moodIndex, mComment, mDate));
             if (MoodList.size() >= 7) {
-                MoodList.add(new Mood(moodIndex, mComment, mDate));
                 MoodList.remove(0);
             }
             jsonMood = gson.toJson(MoodList);
             preferences.edit().putString("Moods", jsonMood).apply();
+            mDate = Calendar.getInstance();
+            moodIndex = 4;
+            mComment = "";
         }
-
 
         //connecting the views
         final ImageView mAddComment;
@@ -144,10 +146,6 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
                         mLayout.setBackgroundColor(backgroundColor);
 
                         preferences.edit().putInt("mood_index", moodIndex).apply();
-
-                        mDate = mood.getmDate(); //get the current date and time(doesn't take account of winter time)
-                        mDayOfMonth = mDate.get(Calendar.DAY_OF_MONTH);
-                        preferences.edit().putInt("date", mDayOfMonth).apply();
 
                         y_down = 0;
                         y_up = 0;
@@ -221,40 +219,42 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
     protected void onResume() {
         super.onResume();
 
-        mDate = Calendar.getInstance();
-        isANewDay = util.compareDate(mDate);
-
-        if(isANewDay) {
-            if(MoodList.size() < 7) {
-                MoodList.add(new Mood(moodIndex, mComment, mDate));
-            }
-            if(MoodList.size() >= 7) {
-                MoodList.add(new Mood(moodIndex, mComment, mDate));
-                MoodList.remove(0);
-            }
-            jsonMood = gson.toJson(MoodList);
-            preferences.edit().putString("Moods", jsonMood).apply();
-        }
+        //mDate = Calendar.getInstance();
+        //isANewDay = util.compareDate(mDate);
+//        isANewDay = util.testCompareDate(mDate);
+//
+//        if(isANewDay) {
+//            if(MoodList.size() < 7) {
+//                MoodList.add(new Mood(moodIndex, mComment, mDate));
+//            }
+//            if(MoodList.size() >= 7) {
+//                MoodList.add(new Mood(moodIndex, mComment, mDate));
+//                MoodList.remove(0);
+//            }
+//            jsonMood = gson.toJson(MoodList);
+//            preferences.edit().putString("Moods", jsonMood).apply();
+//        }
     }
 
     //Check if it's a new day during while pausing activity
     protected void onPause() {
         super.onPause();
 
-        mDate = Calendar.getInstance();
-        isANewDay = util.compareDate(mDate);
-
-        if(isANewDay) {
-            if(MoodList.size() < 7) {
-                MoodList.add(new Mood(moodIndex, mComment, mDate));
-            }
-            if(MoodList.size() >= 7) {
-                MoodList.add(new Mood(moodIndex, mComment, mDate));
-                MoodList.remove(0);
-            }
-            jsonMood = gson.toJson(MoodList);
-            preferences.edit().putString("Moods", jsonMood).apply();
-        }
+//        mDate = Calendar.getInstance();
+//        //isANewDay = util.compareDate(mDate);
+//        isANewDay = util.testCompareDate(mDate);
+//
+//        if(isANewDay) {
+//            if(MoodList.size() < 7) {
+//                MoodList.add(new Mood(moodIndex, mComment, mDate));
+//            }
+//            if(MoodList.size() >= 7) {
+//                MoodList.add(new Mood(moodIndex, mComment, mDate));
+//                MoodList.remove(0);
+//            }
+//            jsonMood = gson.toJson(MoodList);
+//            preferences.edit().putString("Moods", jsonMood).apply();
+//        }
     }
 }
 

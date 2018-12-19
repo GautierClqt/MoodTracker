@@ -17,12 +17,6 @@ public class HistoricDisplayActivity extends AppCompatActivity {
     private ArrayList<String> mCommentList = new ArrayList<>();
 
 
-    private int mBackgroundColor;
-    private int mTextviewWeight;
-    private String mDays;
-    private boolean isCommentTrue;
-    private String mComment;
-    Random rand = new Random();
     Mood mood = new Mood();
     Utils util = new Utils();
 
@@ -31,8 +25,7 @@ public class HistoricDisplayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historic_display);
 
-        initMoodHistoryList();
-        //initTestLists();
+        initMoodHistoryList();;
     }
 
     //get the moods ArrayList to fill up the history RecyclerView
@@ -42,11 +35,10 @@ public class HistoricDisplayActivity extends AppCompatActivity {
 
         for(int i = 0; i <= MoodList.size()-1; i++) {
             mCommentList.add(MoodList.get(i).getmComment());
-            mDays = util.historicDayPast(MoodList.size()-1-i);
-            mDateList.add(mDays);
-            //mBackgroundColor = MoodList.get(i).getmIndexMood();
-            mBackgroundColor = mood.changeBackgroundColor(MoodList.get(i).getmIndexMood());
-            mBackgroundColorList.add(mBackgroundColor);
+            String mMDays = util.historicDayPast(MoodList.size() - 1 - i);
+            mDateList.add(mMDays);
+            int mMBackgroundColor = mood.changeBackgroundColor(MoodList.get(i).getmIndexMood());
+            mBackgroundColorList.add(mMBackgroundColor);
             mTextViewWeightList.add(MoodList.get(i).getmIndexMood());
         }
         initRecyclerView();

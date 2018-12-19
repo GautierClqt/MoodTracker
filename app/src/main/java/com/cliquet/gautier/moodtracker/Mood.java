@@ -41,7 +41,7 @@ public class Mood implements Serializable {
     }
 
     public Calendar getmDate() {
-        mDate = mDate.getInstance();
+        //mDate = mDate.getInstance();
         return mDate;
     }
 
