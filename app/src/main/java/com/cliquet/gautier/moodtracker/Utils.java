@@ -11,7 +11,20 @@ public class Utils {
 
     private Calendar newDate = Calendar.getInstance();
 
-    public boolean compareDate(Calendar oldDate) {
+    public boolean compareDate(int oldDayOfYear, int oldYear) {
+        int newDayOfYear = newDate.get(Calendar.DAY_OF_YEAR);
+        int newYear = newDate.get(Calendar.YEAR);
+
+        if(oldDayOfYear != newDayOfYear || oldYear != newYear) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    //PLUS UTILISER, A ENLEVER
+    public boolean oldCompareDate(Calendar oldDate) {
         int mNewDayOfYear = newDate.get(Calendar.DAY_OF_YEAR);
         int mNewYear = newDate.get(Calendar.YEAR);
         int mOldDayOfYear = oldDate.get(Calendar.DAY_OF_YEAR);
@@ -25,7 +38,7 @@ public class Utils {
         }
     }
 
-    //Méthode de test, ne fait pas parti du produit final!
+    //Méthode de test, NE FAIT PAS PARTI DU PRODUIT FINAL
     public boolean testCompareDate(Calendar oldDate) {
         int mNewDayOfYear = newDate.get(Calendar.MINUTE);
         int mNewYear = newDate.get(Calendar.YEAR);

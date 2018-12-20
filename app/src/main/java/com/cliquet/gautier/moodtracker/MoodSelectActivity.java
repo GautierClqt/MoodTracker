@@ -16,6 +16,8 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 
@@ -26,6 +28,9 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
     private Calendar mDate;
     private boolean isANewDay;
     private boolean mSwipeUp;
+    private int[] moodDate = new int[2];
+    private int dayOfYear;
+    private int year;
 
     private RelativeLayout mLayout;
 
@@ -63,17 +68,19 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         mood.setMoodList(MoodList);
 
         //compare days of month to know if this is a new day
-        if(mDate != null) {
-            mDate = mood.getmDate();
-            String jsonDate = gson.toJson(mDate);
-            mDate = gson.fromJson(jsonDate, new TypeToken<String>(){}.getType());
+        if(mDate != null) { //A RETRAVAILLER!!!!!!
+            mDate = mood.getmDate(); //A RETRAVAILLER!!!!!!
+            String jsonDate = gson.toJson(mDate); //A RETRAVAILLER!!!!!!
+            mDate = gson.fromJson(jsonDate, new TypeToken<String>(){}.getType()); //A RETRAVAILLER!!!!!!
         }
         else {
             mDate = Calendar.getInstance();
-            String jsonDate = gson.toJson(mDate);
-            mDate = gson.fromJson(jsonDate, Calendar.class);
+            dayOfYear = mDate.get(Calendar.DAY_OF_YEAR);
+            year = mDate.get(Calendar.YEAR);
+            moodDate[0] = dayOfYear;
+            moodDate[1] = year;
         }
-        isANewDay = util.compareDate(mDate);
+        isANewDay = util.compareDate(moodDate[0], moodDate[1]);
         if (isANewDay) {
             MoodList.add(new Mood(moodIndex, mComment, mDate));
             if (MoodList.size() >= 7) {
