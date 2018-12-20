@@ -4,17 +4,16 @@ import android.graphics.Color;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class Mood implements Serializable {
 
     private int mIndexMood;
     private String mComment;
-    private Calendar mDate;
+    private int[] mDate;
 
     private ArrayList<Mood> mMoodList = new ArrayList<>();
 
-    public Mood(int mIndexMood, String mComment, Calendar mDate) {
+    public Mood(int mIndexMood, String mComment, int[] mDate) {
         this.mIndexMood = mIndexMood;
         this.mComment = mComment;
         this.mDate = mDate;
@@ -40,8 +39,7 @@ public class Mood implements Serializable {
         this.mComment = mComment;
     }
 
-    public Calendar getmDate() {
-        //mDate = mDate.getInstance();
+    public int[] getmDate() {
         return mDate;
     }
 
