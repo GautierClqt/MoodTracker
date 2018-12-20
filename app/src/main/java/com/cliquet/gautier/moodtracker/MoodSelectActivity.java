@@ -25,7 +25,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
     protected String mComment = "";
     private Calendar mDate;
     private boolean mSwipeUp;
-    private int[] moodDate = new int[2];
+    private int[] moodDate = new int[3];
 
     private RelativeLayout mLayout;
 
@@ -68,11 +68,11 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         mood.setMoodList(MoodList);
 
         //compare days of month to know if it's a new day
-        //moodDate[0] = 2; //POUR TESTER -- A ENLEVER
+        //moodDate[0] = 352; //A ENLEVER!!!!!
         boolean mIsANewDay = util.compareDate(moodDate[0], moodDate[1]);
-        if (mIsANewDay) {
+        if (mIsANewDay && jsonDate != null) {
             MoodList.add(new Mood(moodIndex, mComment, moodDate));
-            if (MoodList.size() >= 7) {
+            if (MoodList.size() > 7) {
                 MoodList.remove(0);
             }
             jsonMood = gson.toJson(MoodList);
@@ -82,6 +82,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
             mDate = Calendar.getInstance();
             moodDate[0] = mDate.get(Calendar.DAY_OF_YEAR);
             moodDate[1] = mDate.get(Calendar.YEAR);
+            moodDate[2] = mDate.get(Calendar.MONTH);
 
             //adding date, index, comment to preferences
             preferences.edit().putString("date", jsonDate = gson.toJson(moodDate)).apply();
@@ -152,6 +153,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
                         mDate = Calendar.getInstance();
                         moodDate[0] = mDate.get(Calendar.DAY_OF_YEAR);
                         moodDate[1] = mDate.get(Calendar.YEAR);
+                        moodDate[2] = mDate.get(Calendar.MONTH);
 
                         //adding index and date to preferences
                         preferences.edit().putInt("mood_index", moodIndex).apply();

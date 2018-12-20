@@ -35,37 +35,13 @@ public class HistoricDisplayActivity extends AppCompatActivity {
 
         for(int i = 0; i <= MoodList.size()-1; i++) {
             mCommentList.add(MoodList.get(i).getmComment());
-            String mMDays = util.historicDayPast(MoodList.size() - 1 - i);
+            String mMDays = util.timeAgo(MoodList.get(i).getmDate());
             mDateList.add(mMDays);
             int mMBackgroundColor = mood.changeBackgroundColor(MoodList.get(i).getmIndexMood());
             mBackgroundColorList.add(mMBackgroundColor);
             mTextViewWeightList.add(MoodList.get(i).getmIndexMood());
         }
         initRecyclerView();
-    }
-
-    //TEST: méthode permettant de remplir le listitem pour le recycler view -- DOIT ETRE EFFACE DANS LE PROJET FINAL, initMoodHistoryList est la véritable méthode à utiliser
-    private void initTestLists() {
-
-//        for(int i = 6; i >= 0; i--) {
-//            isCommentTrue = rand.nextBoolean();
-//            if(isCommentTrue) {
-//                mComment = "Bonjour";
-//            }
-//            else {
-//                mComment = "";
-//            }
-//            mCommentList.add(mComment);
-//            mDays = util.historicDayPast(i);
-//            mDateList.add(mDays);
-//            mBackgroundColor = rand.nextInt(5);
-//            mTextviewWeight = mBackgroundColor;
-//            mBackgroundColor = mood.changeBackgroundColor(mBackgroundColor);
-//            mBackgroundColorList.add(mBackgroundColor);
-//            mTextviewWeightList.add(mTextviewWeight);
-//        }
-
-        //initRecyclerView();
     }
 
     private void initRecyclerView() {
