@@ -16,8 +16,7 @@
             android:id="@+id/layout_historic_listitem_sincewhen_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorAccent"
-            android:text="Il y a x jours" />
+            android:background="@color/colorAccent" />
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/layout_historic_listitem_attachedcomment_image"
@@ -27,7 +26,9 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="0dp"
             android:padding="15dp"
-            android:src="@drawable/ic_comment_black_48px" />
+            android:src="@drawable/ic_comment_black_48px"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="0dp" />
 
     </RelativeLayout>
 

@@ -1,9 +1,6 @@
 package com.cliquet.gautier.moodtracker;
 
-import android.graphics.Color;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Mood implements Serializable {
 
@@ -11,75 +8,25 @@ public class Mood implements Serializable {
     private String mComment;
     private int[] mDate;
 
-    private ArrayList<Mood> mMoodList = new ArrayList<>();
-
-    public Mood(int mIndexMood, String mComment, int[] mDate) {
+    Mood(int mIndexMood, String mComment, int[] mDate) {
         this.mIndexMood = mIndexMood;
         this.mComment = mComment;
         this.mDate = mDate;
     }
 
-    public Mood() {
-    }
-
-    public int getmIndexMood() {
+    int getIndexMood() {
         return mIndexMood;
     }
 
-    public void setmIndexMood(int mIndexMood) {
-        mIndexMood = this.setMoodIndex(mIndexMood);
-        this.mIndexMood = mIndexMood;
-    }
-
-    public String getmComment() {
+    String getComment() {
         return mComment;
     }
 
-    public void setmComment(String mComment) {
+    void setComment(String mComment) {
         this.mComment = mComment;
     }
 
-    public int[] getmDate() {
+    public int[] getDate() {
         return mDate;
     }
-
-
-    public int setMoodIndex(int mMoodPosition) {
-        if (mMoodPosition >= 0 && mMoodPosition < 4) {
-            mMoodPosition++;
-        }
-        else{  //if mMoodPosition = 5(ie. out of array bound) it will be set back to 0
-            mMoodPosition = 0;
-        }
-        return mMoodPosition;
-    }
-
-    public int changeBackgroundColor(int mMoodPosition) {
-
-        int mBackgroundColor = 0;
-
-        switch(mMoodPosition) {
-            case 0: mBackgroundColor = Color.parseColor("#ffde3c50");
-            break;
-            case 1: mBackgroundColor = Color.parseColor("#ff9b9b9b");
-            break;
-            case 2: mBackgroundColor = Color.parseColor("#a5468ad9");
-            break;
-            case 3: mBackgroundColor = Color.parseColor("#ffb8e986");
-            break;
-            case 4: mBackgroundColor = Color.parseColor("#fff9ec4f");
-            break;
-        }
-        return mBackgroundColor;
-    }
-
-    //set the ArrayList to get saved(preferences) mood objects, used mainly for historic
-    public void setMoodList(ArrayList<Mood> mMoodList) {
-        this.mMoodList = mMoodList;
-    }
-
-    public ArrayList getMoodList() {
-        return mMoodList;
-    }
-
 }

@@ -22,10 +22,10 @@ import java.util.List;
 public class MoodSelectActivity extends AppCompatActivity implements CommentDialog.CommentDialogListener {
 
     private int moodIndex;
-    protected String mComment = "";
+    protected String moodComment = "";
     private Calendar mDate;
     private boolean mSwipeUp;
-    private int[] moodDate = new int[3];
+    private int[] moodDate = new int[2];
 
     private RelativeLayout mLayout;
 
@@ -33,7 +33,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
     private SharedPreferences preferences;
     private int backgroundColor;
 
-    Mood mood = new Mood(moodIndex, mComment, moodDate);
+    Mood mood = new Mood(moodIndex, moodComment, moodDate);
     Utils util = new Utils();
     Gson gson = new Gson();
 
@@ -51,9 +51,9 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
 
         preferences = getPreferences(MODE_PRIVATE);
 
-        //if there's no preferences normal mood is display by default
+        //if there's no preferences, normal mood is display by default
         moodIndex = getPreferences(MODE_PRIVATE).getInt("mood_index", 3);
-        mComment = getPreferences(MODE_PRIVATE).getString("comment", "");
+        moodComment = getPreferences(MODE_PRIVATE).getString("comment", "");
         jsonDate = getPreferences(MODE_PRIVATE).getString("date", null);
         if(jsonDate != null) {
             moodDate = gson.fromJson(jsonDate, new TypeToken<int[]>(){}.getType());
@@ -65,13 +65,10 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
             MoodList = gson.fromJson(jsonMood, new TypeToken<List<Mood>>(){}.getType());
         }
 
-        mood.setMoodList(MoodList);
-
         //compare days of month to know if it's a new day
-        //moodDate[0] = 352; //A ENLEVER!!!!!
         boolean mIsANewDay = util.compareDate(moodDate[0], moodDate[1]);
         if (mIsANewDay && jsonDate != null) {
-            MoodList.add(new Mood(moodIndex, mComment, moodDate));
+            MoodList.add(new Mood(moodIndex, moodComment, moodDate));
             if (MoodList.size() > 7) {
                 MoodList.remove(0);
             }
@@ -82,12 +79,11 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
             mDate = Calendar.getInstance();
             moodDate[0] = mDate.get(Calendar.DAY_OF_YEAR);
             moodDate[1] = mDate.get(Calendar.YEAR);
-            moodDate[2] = mDate.get(Calendar.MONTH);
 
             //adding date, index, comment to preferences
             preferences.edit().putString("date", jsonDate = gson.toJson(moodDate)).apply();
             preferences.edit().putInt("mood_index", moodIndex = 3).apply();
-            preferences.edit().putString("comment", mComment = "").apply();
+            preferences.edit().putString("comment", moodComment = "").apply();
         }
 
         //connecting the views
@@ -101,22 +97,21 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         mDisplayHistoricActivity = findViewById(R.id.activity_mood_select_display_historic_image);
         mSendMessage = findViewById(R.id.activity_mood_select_sendmessage_image);
 
-        //all five moods' images are stored in moodList
+        //all five moods' images are stored in moodList from worst [0] to best [4]
         moodList[0] = getResources().getDrawable(R.drawable.smiley_sad);
         moodList[1] = getResources().getDrawable(R.drawable.smiley_disappointed);
         moodList[2] = getResources().getDrawable(R.drawable.smiley_normal);
         moodList[3] = getResources().getDrawable(R.drawable.smiley_happy);
         moodList[4] = getResources().getDrawable(R.drawable.smiley_super_happy);
 
-        //normal mood and background are set by default
+        //normal mood and background are set by default when using the app for the first time
         mDisplayedMood.setImageDrawable(moodList[moodIndex]);
-        backgroundColor = mood.changeBackgroundColor(moodIndex);
+        backgroundColor = util.changeBackgroundColor(moodIndex);
         mLayout.setBackgroundColor(backgroundColor);
 
-        //mDisplayedMood.setOnTouchListener(new GestureDetector.OnGestureListener(){
 
         //handle the mood up and down swapping
-        mDisplayedMood.setOnTouchListener(new View.OnTouchListener() {
+        mLayout.setOnTouchListener(new View.OnTouchListener() {
             float y_up;
             float y_down;
             float y_difference;
@@ -146,14 +141,13 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
                         }
 
                         mDisplayedMood.setImageDrawable(moodList[moodIndex]);
-                        backgroundColor = mood.changeBackgroundColor(moodIndex);
+                        backgroundColor = util.changeBackgroundColor(moodIndex);
                         mLayout.setBackgroundColor(backgroundColor);
 
                         //getting date and time and extracting day of year and year for further comparison
                         mDate = Calendar.getInstance();
                         moodDate[0] = mDate.get(Calendar.DAY_OF_YEAR);
                         moodDate[1] = mDate.get(Calendar.YEAR);
-                        moodDate[2] = mDate.get(Calendar.MONTH);
 
                         //adding index and date to preferences
                         preferences.edit().putInt("mood_index", moodIndex).apply();
@@ -201,25 +195,13 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         commentDialog.show(getSupportFragmentManager(), "comment dialog");
     }
 
-    //display and save(preferences) the written comment
+    //save(preferences) the written comment
     @Override
     public void getComment(String DialogComment) {
-        mComment = DialogComment;
-        mood.setmComment(mComment);
-        mComment = mood.getmComment();
-        preferences.edit().putString("comment", mComment).apply();
-    }
-
-    //Check if it's a new day during while resuming activity
-    protected void onResume() {
-        super.onResume();
-
-    }
-
-    //Check if it's a new day during while pausing activity
-    protected void onPause() {
-        super.onPause();
-
+        moodComment = DialogComment;
+        mood.setComment(moodComment);
+        moodComment = mood.getComment();
+        preferences.edit().putString("comment", moodComment).apply();
     }
 }
 

@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class HistoricDisplayActivity extends AppCompatActivity {
 
@@ -16,8 +15,6 @@ public class HistoricDisplayActivity extends AppCompatActivity {
     private ArrayList<Integer> mTextViewWeightList = new ArrayList<>();
     private ArrayList<String> mCommentList = new ArrayList<>();
 
-
-    Mood mood = new Mood();
     Utils util = new Utils();
 
     @Override
@@ -25,7 +22,7 @@ public class HistoricDisplayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historic_display);
 
-        initMoodHistoryList();;
+        initMoodHistoryList();
     }
 
     //get the moods ArrayList to fill up the history RecyclerView
@@ -34,12 +31,12 @@ public class HistoricDisplayActivity extends AppCompatActivity {
         ArrayList<Mood> MoodList = (ArrayList<Mood>) getIntent().getSerializableExtra("List_Of_Moods");
 
         for(int i = 0; i <= MoodList.size()-1; i++) {
-            mCommentList.add(MoodList.get(i).getmComment());
-            String mMDays = util.timeAgo(MoodList.get(i).getmDate());
+            mCommentList.add(MoodList.get(i).getComment());
+            String mMDays = util.timeAgo(MoodList.get(i).getDate());
             mDateList.add(mMDays);
-            int mMBackgroundColor = mood.changeBackgroundColor(MoodList.get(i).getmIndexMood());
+            int mMBackgroundColor = util.changeBackgroundColor(MoodList.get(i).getIndexMood());
             mBackgroundColorList.add(mMBackgroundColor);
-            mTextViewWeightList.add(MoodList.get(i).getmIndexMood());
+            mTextViewWeightList.add(MoodList.get(i).getIndexMood());
         }
         initRecyclerView();
     }

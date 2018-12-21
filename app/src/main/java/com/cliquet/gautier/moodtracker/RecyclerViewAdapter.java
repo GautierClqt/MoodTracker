@@ -1,7 +1,6 @@
 package com.cliquet.gautier.moodtracker;
 
-import android.app.ActionBar;
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +23,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ArrayList<Integer> mDynamicWeight;
     private ArrayList<String> mComment;
 
-    public RecyclerViewAdapter(Context mContext, ArrayList<String> mSinceWhen, ArrayList<Integer> mBackgroundColor, ArrayList<Integer> mDynamicWeight, ArrayList<String> mComment) {
+    RecyclerViewAdapter(Context mContext, ArrayList<String> mSinceWhen, ArrayList<Integer> mBackgroundColor, ArrayList<Integer> mDynamicWeight, ArrayList<String> mComment) {
         this.mContext = mContext;
         this.mSinceWhen = mSinceWhen;
         this.mBackgroundColor = mBackgroundColor;
@@ -36,16 +35,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_historic_listitem, viewGroup, false);
-        ViewHolder viewholder = new ViewHolder(view);
-        return viewholder;
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, @SuppressLint("RecyclerView") final int i) {
 
         String test;
         test = mComment.get(i);
-        if(test == "") {
+        if(test.equals("")) {
             viewHolder.historicCommentImage.setVisibility(View.GONE);
         }
         else {
@@ -85,14 +83,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return mBackgroundColor.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView historicText;
         TextView blankText;
         ImageView historicCommentImage;
         RelativeLayout mainLayout;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             mainLayout = itemView.findViewById(R.id.layout_historic_listitem_parentlayout_layout);

@@ -1,25 +1,41 @@
 package com.cliquet.gautier.moodtracker;
 
+import android.graphics.Color;
+
 import java.util.Calendar;
 
 class Utils {
 
     private Calendar newDate = Calendar.getInstance();
 
-    boolean compareDate(int oldDayOfYear, int oldYear) {
+    //get the correct color according to the selected mood
+    int changeBackgroundColor(int mMoodPosition) {
+        int mBackgroundColor = 0;
 
+        switch(mMoodPosition) {
+            case 0: mBackgroundColor = Color.parseColor("#ffde3c50");
+                break;
+            case 1: mBackgroundColor = Color.parseColor("#ff9b9b9b");
+                break;
+            case 2: mBackgroundColor = Color.parseColor("#a5468ad9");
+                break;
+            case 3: mBackgroundColor = Color.parseColor("#ffb8e986");
+                break;
+            case 4: mBackgroundColor = Color.parseColor("#fff9ec4f");
+                break;
+        }
+        return mBackgroundColor;
+    }
+
+    //determine if this is a new day
+    boolean compareDate(int oldDayOfYear, int oldYear) {
         int newDayOfYear = newDate.get(Calendar.DAY_OF_YEAR);
         int newYear = newDate.get(Calendar.YEAR);
 
-        if(oldDayOfYear != newDayOfYear || oldYear != newYear) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return oldDayOfYear != newDayOfYear || oldYear != newYear;
     }
 
-    //String timeAgo(int oldDayOfYear, int oldYear, int oldMonth) {
+    //determine the correct String to display in the historic activity
     String timeAgo(int[] oldDate) {
         String sinceWhen = "";
 
@@ -27,7 +43,6 @@ class Utils {
         int oldYear = oldDate[1];
 
         int newDayOfYear = newDate.get(Calendar.DAY_OF_YEAR);
-        //int newDayOfYear = 356;
         int newYear = newDate.get(Calendar.YEAR);
 
         int dateDifference = 0;
