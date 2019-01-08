@@ -1,6 +1,9 @@
 package com.cliquet.gautier.moodtracker;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.ContextCompat;
 
 import java.util.Calendar;
 
@@ -101,14 +104,4 @@ class Utils {
         }
         return moodMessage;
     }
-
-    //CAN'T BE USED, NEED TO WORK ON A SELF timeAgo() METHOD
-//    public String timeAgo() {
-//        long timeInMillis = System.currentTimeMillis();
-//        Locale LocaleBylanguageTag = Locale.forLanguageTag("fr");
-//        TimeAgoMessages messages = new TimeAgoMessages.Builder().withLocale(LocaleBylanguageTag).build();
-//        String timeAgoMessage = TimeAgo.using(timeInMillis, messages);
-//
-//        return timeAgoMessage;
-//    }
 }

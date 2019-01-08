@@ -36,7 +36,6 @@
         android:id="@+id/layout_historic_listitem_blanktextview_text"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.20"
-        android:background="@color/lightGrey" />
+        android:layout_weight="0.20" />
 
 </LinearLayout>

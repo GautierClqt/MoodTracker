@@ -29,7 +29,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
 
     private RelativeLayout mLayout;
 
-    private Drawable[] moodList = new Drawable[5];
+    private Drawable[] moodImagesList = new Drawable[5];
     private SharedPreferences preferences;
     private int backgroundColor;
 
@@ -37,7 +37,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
     Utils util = new Utils();
     Gson gson = new Gson();
 
-    private ArrayList<Mood> MoodList = new ArrayList<>();
+    private ArrayList<Mood> moodList = new ArrayList<>();
     String jsonMood;
     String jsonDate;
 
@@ -55,6 +55,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         moodIndex = getPreferences(MODE_PRIVATE).getInt("mood_index", 3);
         moodComment = getPreferences(MODE_PRIVATE).getString("comment", "");
         jsonDate = getPreferences(MODE_PRIVATE).getString("date", null);
+
         if(jsonDate != null) {
             moodDate = gson.fromJson(jsonDate, new TypeToken<int[]>(){}.getType());
         }
@@ -62,17 +63,17 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         //get json type converted mood to Mood object type
         jsonMood = preferences.getString("Moods", null);
         if(jsonMood != null) {
-            MoodList = gson.fromJson(jsonMood, new TypeToken<List<Mood>>(){}.getType());
+            moodList = gson.fromJson(jsonMood, new TypeToken<List<Mood>>(){}.getType());
         }
 
         //compare days of month to know if it's a new day
         boolean mIsANewDay = util.compareDate(moodDate[0], moodDate[1]);
         if (mIsANewDay && jsonDate != null) {
-            MoodList.add(new Mood(moodIndex, moodComment, moodDate));
-            if (MoodList.size() > 7) {
-                MoodList.remove(0);
+            moodList.add(new Mood(moodIndex, moodComment, moodDate));
+            if (moodList.size() > 7) {
+                moodList.remove(0);
             }
-            jsonMood = gson.toJson(MoodList);
+            jsonMood = gson.toJson(moodList);
             preferences.edit().putString("Moods", jsonMood).apply();
 
             //getting date and time and extracting day of year and year for further comparison
@@ -97,15 +98,15 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         mDisplayHistoricActivity = findViewById(R.id.activity_mood_select_display_historic_image);
         mSendMessage = findViewById(R.id.activity_mood_select_sendmessage_image);
 
-        //all five moods' images are stored in moodList from worst [0] to best [4]
-        moodList[0] = getResources().getDrawable(R.drawable.smiley_sad);
-        moodList[1] = getResources().getDrawable(R.drawable.smiley_disappointed);
-        moodList[2] = getResources().getDrawable(R.drawable.smiley_normal);
-        moodList[3] = getResources().getDrawable(R.drawable.smiley_happy);
-        moodList[4] = getResources().getDrawable(R.drawable.smiley_super_happy);
+        //all five moods' images are stored in moodImagesList from worst [0] to best [4]
+        moodImagesList[0] = getResources().getDrawable(R.drawable.smiley_sad);
+        moodImagesList[1] = getResources().getDrawable(R.drawable.smiley_disappointed);
+        moodImagesList[2] = getResources().getDrawable(R.drawable.smiley_normal);
+        moodImagesList[3] = getResources().getDrawable(R.drawable.smiley_happy);
+        moodImagesList[4] = getResources().getDrawable(R.drawable.smiley_super_happy);
 
         //normal mood and background are set by default when using the app for the first time
-        mDisplayedMood.setImageDrawable(moodList[moodIndex]);
+        mDisplayedMood.setImageDrawable(moodImagesList[moodIndex]);
         backgroundColor = util.changeBackgroundColor(moodIndex);
         mLayout.setBackgroundColor(backgroundColor);
 
@@ -140,7 +141,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
                             moodIndex--;
                         }
 
-                        mDisplayedMood.setImageDrawable(moodList[moodIndex]);
+                        mDisplayedMood.setImageDrawable(moodImagesList[moodIndex]);
                         backgroundColor = util.changeBackgroundColor(moodIndex);
                         mLayout.setBackgroundColor(backgroundColor);
 
@@ -174,7 +175,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
             @Override
             public void onClick(View v) {
                 Intent historicActivityIntent = new Intent(MoodSelectActivity.this, HistoricDisplayActivity.class);
-                historicActivityIntent.putExtra("List_Of_Moods", MoodList);
+                historicActivityIntent.putExtra("List_Of_Moods", moodList);
                 startActivity(historicActivityIntent);
             }
         });
