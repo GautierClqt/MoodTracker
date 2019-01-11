@@ -43,6 +43,8 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
 
     public ImageView mDisplayedMood;
 
+    private float y_down;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,54 +115,17 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
 
         //handle the mood up and down swapping
         mLayout.setOnTouchListener(new View.OnTouchListener() {
-            float y_up;
-            float y_down;
-            float y_difference;
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                event.getAction();
 
-                //check if user gesture went upward or downward and put moodIndex in the correct position then display the right mood and backgroundcolor
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    y_down = event.getY();
-                }
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    y_up = event.getY();
-
-                    y_difference = Math.abs(y_down - y_up);
-                    if (y_down > y_up) {
-                        mSwipeUp = true;
-                    } else if (y_down < y_up) {
-                        mSwipeUp = false;
-                    }
-
-                    if(y_difference > 100) {
-                        if (mSwipeUp && moodIndex < 4) {
-                            moodIndex++;
-                        } else if (!mSwipeUp && moodIndex > 0) {
-                            moodIndex--;
-                        }
-
-                        mDisplayedMood.setImageDrawable(moodImagesList[moodIndex]);
-                        backgroundColor = util.changeBackgroundColor(moodIndex);
-                        mLayout.setBackgroundColor(backgroundColor);
-
-                        //getting date and time and extracting day of year and year for further comparison
-                        mDate = Calendar.getInstance();
-                        moodDate[0] = mDate.get(Calendar.DAY_OF_YEAR);
-                        moodDate[1] = mDate.get(Calendar.YEAR);
-
-                        //adding index and date to preferences
-                        preferences.edit().putInt("mood_index", moodIndex).apply();
-                        preferences.edit().putString("date", jsonDate = gson.toJson(moodDate)).apply();
-
-                        y_down = 0;
-                        y_up = 0;
-                    }
-                }
+                Swipe(event);
                 return true;
             }
         });
+
+
 
         //call the comment dialog
         mAddComment.setOnClickListener(new View.OnClickListener() {
@@ -189,6 +154,46 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
                 startActivity(smsIntent);
             }
         });
+    }
+
+    //check if user gesture went upward or downward and put moodIndex in the correct position then display the right mood and backgroundcolor
+    public void Swipe(MotionEvent event) {
+        float y_difference;
+        float y_up;
+
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            y_down = event.getY();
+        }
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            y_up = event.getY();
+            y_difference = Math.abs(y_down - y_up);
+            if (y_down > y_up) {
+                mSwipeUp = true;
+            } else if (y_down < y_up) {
+                mSwipeUp = false;
+            }
+
+            if(y_difference > 100) {
+                if (mSwipeUp && moodIndex < 4) {
+                    moodIndex++;
+                } else if (!mSwipeUp && moodIndex > 0) {
+                    moodIndex--;
+                }
+
+                mDisplayedMood.setImageDrawable(moodImagesList[moodIndex]);
+                backgroundColor = util.changeBackgroundColor(moodIndex);
+                mLayout.setBackgroundColor(backgroundColor);
+
+                //getting date and time and extracting day of year and year for further comparison
+                mDate = Calendar.getInstance();
+                moodDate[0] = mDate.get(Calendar.DAY_OF_YEAR);
+                moodDate[1] = mDate.get(Calendar.YEAR);
+
+                //adding index and date to preferences
+                preferences.edit().putInt("mood_index", moodIndex).apply();
+                preferences.edit().putString("date", jsonDate = gson.toJson(moodDate)).apply();
+            }
+        }
     }
 
     public void openDialog() {
