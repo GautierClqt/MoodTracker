@@ -71,27 +71,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
             moodList = gson.fromJson(jsonMood, new TypeToken<List<Mood>>(){}.getType());
         }
 
-        //compare days of month to know if it's a new day
-        boolean mIsANewDay = util.compareDate(moodDate[0], moodDate[1]);
-        if (mIsANewDay && jsonDate != null) {
-            moodList.add(new Mood(moodIndex, moodComment, moodDate));
-            if (moodList.size() > 7) {
-                moodList.remove(0);
-            }
-            jsonMood = gson.toJson(moodList);
-            preferences.edit().putString("Moods", jsonMood).apply();
-
-            //getting date and time and extracting day of year and year for further comparison
-            mDate = Calendar.getInstance();
-            moodDate[0] = mDate.get(Calendar.DAY_OF_YEAR);
-            moodDate[1] = mDate.get(Calendar.YEAR);
-
-            //adding date, index, comment to preferences
-            preferences.edit().putString("date", jsonDate = gson.toJson(moodDate)).apply();
-            preferences.edit().putInt("mood_index", moodIndex = 3).apply();
-            preferences.edit().putString("comment", moodComment = "").apply();
-        }
-
+        checkingForNewDay();
         layoutConnexion();
         initMoodsList();
         initColorsList();
@@ -155,6 +135,30 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         mLayout = findViewById(R.id.activity_mood_select_layout_layout);
         mDisplayHistoricActivity = findViewById(R.id.activity_mood_select_display_historic_image);
         mSendMessage = findViewById(R.id.activity_mood_select_sendmessage_image);
+    }
+
+    public void checkingForNewDay() {
+        //compare days of month to know if it's a new day
+        boolean mIsANewDay = util.compareDate(moodDate[0], moodDate[1]);
+        if (mIsANewDay && jsonDate != null) {
+            moodList.add(new Mood(moodIndex, moodComment, moodDate));
+            if (moodList.size() > 7) {
+                moodList.remove(0);
+            }
+            jsonMood = gson.toJson(moodList);
+            preferences.edit().putString("Moods", jsonMood).apply();
+
+            //getting date and time and extracting day of year and year for further comparison
+            mDate = Calendar.getInstance();
+            moodDate[0] = mDate.get(Calendar.DAY_OF_YEAR);
+            moodDate[1] = mDate.get(Calendar.YEAR);
+
+            //adding date, index, comment to preferences
+            preferences.edit().putString("date", jsonDate = gson.toJson(moodDate)).apply();
+            preferences.edit().putInt("mood_index", moodIndex = 3).apply();
+            preferences.edit().putString("comment", moodComment = "").apply();
+        }
+
     }
 
     //all five moods' images are stored in moodImagesList from worst [0] to best [4]
