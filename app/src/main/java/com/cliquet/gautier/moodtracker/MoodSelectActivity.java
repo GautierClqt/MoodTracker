@@ -3,6 +3,7 @@ package com.cliquet.gautier.moodtracker;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -24,12 +25,13 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
     private int moodIndex;
     protected String moodComment = "";
     private Calendar mDate;
-    private boolean mSwipeUp;
+
     private int[] moodDate = new int[2];
 
     private RelativeLayout mLayout;
 
     private Drawable[] moodImagesList = new Drawable[5];
+    private int[] backgroundColorsList = new int[5];
     private SharedPreferences preferences;
     private int backgroundColor;
 
@@ -43,7 +45,12 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
 
     public ImageView mDisplayedMood;
 
+    private boolean mSwipeUp;
     private float y_down;
+
+    ImageView mAddComment;
+    ImageView mDisplayHistoricActivity;
+    public ImageView mSendMessage;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -52,11 +59,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         setContentView(R.layout.activity_mood_select);
 
         preferences = getPreferences(MODE_PRIVATE);
-
-        //if there's no preferences, normal mood is display by default
-        moodIndex = getPreferences(MODE_PRIVATE).getInt("mood_index", 3);
-        moodComment = getPreferences(MODE_PRIVATE).getString("comment", "");
-        jsonDate = getPreferences(MODE_PRIVATE).getString("date", null);
+        getMoodPreferences();
 
         if(jsonDate != null) {
             moodDate = gson.fromJson(jsonDate, new TypeToken<int[]>(){}.getType());
@@ -89,29 +92,13 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
             preferences.edit().putString("comment", moodComment = "").apply();
         }
 
-        //connecting the views
-        final ImageView mAddComment;
-        final ImageView mDisplayHistoricActivity;
-        final ImageView mSendMessage;
-
-        mDisplayedMood = findViewById(R.id.activity_mood_select_placeholder_image);
-        mAddComment = findViewById(R.id.activity_add_comment_image);
-        mLayout = findViewById(R.id.activity_mood_select_layout_layout);
-        mDisplayHistoricActivity = findViewById(R.id.activity_mood_select_display_historic_image);
-        mSendMessage = findViewById(R.id.activity_mood_select_sendmessage_image);
-
-        //all five moods' images are stored in moodImagesList from worst [0] to best [4]
-        moodImagesList[0] = getResources().getDrawable(R.drawable.smiley_sad);
-        moodImagesList[1] = getResources().getDrawable(R.drawable.smiley_disappointed);
-        moodImagesList[2] = getResources().getDrawable(R.drawable.smiley_normal);
-        moodImagesList[3] = getResources().getDrawable(R.drawable.smiley_happy);
-        moodImagesList[4] = getResources().getDrawable(R.drawable.smiley_super_happy);
+        layoutConnexion();
+        initMoodsList();
+        initColorsList();
 
         //normal mood and background are set by default when using the app for the first time
         mDisplayedMood.setImageDrawable(moodImagesList[moodIndex]);
-        backgroundColor = util.changeBackgroundColor(moodIndex);
-        mLayout.setBackgroundColor(backgroundColor);
-
+        mLayout.setBackgroundColor(backgroundColorsList[moodIndex]);
 
         //handle the mood up and down swapping
         mLayout.setOnTouchListener(new View.OnTouchListener() {
@@ -124,8 +111,6 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
                 return true;
             }
         });
-
-
 
         //call the comment dialog
         mAddComment.setOnClickListener(new View.OnClickListener() {
@@ -156,6 +141,40 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         });
     }
 
+    //get the last saved preferences(or default one if first use)
+    public void getMoodPreferences() {
+        moodIndex = getPreferences(MODE_PRIVATE).getInt("mood_index", 3);
+        moodComment = getPreferences(MODE_PRIVATE).getString("comment", "");
+        jsonDate = getPreferences(MODE_PRIVATE).getString("date", null);
+    }
+
+    //connecting the views
+    public void layoutConnexion() {
+        mDisplayedMood = findViewById(R.id.activity_mood_select_placeholder_image);
+        mAddComment = findViewById(R.id.activity_add_comment_image);
+        mLayout = findViewById(R.id.activity_mood_select_layout_layout);
+        mDisplayHistoricActivity = findViewById(R.id.activity_mood_select_display_historic_image);
+        mSendMessage = findViewById(R.id.activity_mood_select_sendmessage_image);
+    }
+
+    //all five moods' images are stored in moodImagesList from worst [0] to best [4]
+    public void initMoodsList() {
+        moodImagesList[0] = getResources().getDrawable(R.drawable.smiley_sad);
+        moodImagesList[1] = getResources().getDrawable(R.drawable.smiley_disappointed);
+        moodImagesList[2] = getResources().getDrawable(R.drawable.smiley_normal);
+        moodImagesList[3] = getResources().getDrawable(R.drawable.smiley_happy);
+        moodImagesList[4] = getResources().getDrawable(R.drawable.smiley_super_happy);
+    }
+
+    //all five background colors are stored in backgroundColorsList in a order corresponding to moodImagesList
+    public void initColorsList () {
+        backgroundColorsList[0] = getResources().getColor(R.color.faded_red);
+        backgroundColorsList[1] = getResources().getColor(R.color.warm_grey);
+        backgroundColorsList[2] = getResources().getColor(R.color.cornflower_blue_65);
+        backgroundColorsList[3] = getResources().getColor(R.color.light_sage);
+        backgroundColorsList[4] = getResources().getColor(R.color.banana_yellow);
+    }
+
     //check if user gesture went upward or downward and put moodIndex in the correct position then display the right mood and backgroundcolor
     public void Swipe(MotionEvent event) {
         float y_difference;
@@ -181,8 +200,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
                 }
 
                 mDisplayedMood.setImageDrawable(moodImagesList[moodIndex]);
-                backgroundColor = util.changeBackgroundColor(moodIndex);
-                mLayout.setBackgroundColor(backgroundColor);
+                mLayout.setBackgroundColor(backgroundColorsList[moodIndex]);
 
                 //getting date and time and extracting day of year and year for further comparison
                 mDate = Calendar.getInstance();
