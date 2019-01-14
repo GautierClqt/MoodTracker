@@ -3,7 +3,6 @@ package com.cliquet.gautier.moodtracker;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -33,7 +32,6 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
     private Drawable[] moodImagesList = new Drawable[5];
     private int[] backgroundColorsList = new int[5];
     private SharedPreferences preferences;
-    private int backgroundColor;
 
     Mood mood = new Mood(moodIndex, moodComment, moodDate);
     Utils util = new Utils();
@@ -46,7 +44,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
     public ImageView mDisplayedMood;
 
     private boolean mSwipeUp;
-    private float y_down;
+    private float yDown;
 
     ImageView mAddComment;
     ImageView mDisplayHistoricActivity;
@@ -60,34 +58,18 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
 
         preferences = getPreferences(MODE_PRIVATE);
         getMoodPreferences();
-
-        if(jsonDate != null) {
-            moodDate = gson.fromJson(jsonDate, new TypeToken<int[]>(){}.getType());
-        }
-
-        //get json type converted mood to Mood object type
-        jsonMood = preferences.getString("Moods", null);
-        if(jsonMood != null) {
-            moodList = gson.fromJson(jsonMood, new TypeToken<List<Mood>>(){}.getType());
-        }
-
         checkingForNewDay();
         layoutConnexion();
         initMoodsList();
         initColorsList();
-
-        //normal mood and background are set by default when using the app for the first time
-        mDisplayedMood.setImageDrawable(moodImagesList[moodIndex]);
-        mLayout.setBackgroundColor(backgroundColorsList[moodIndex]);
+        firstTimeUse();
 
         //handle the mood up and down swapping
         mLayout.setOnTouchListener(new View.OnTouchListener() {
-
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 event.getAction();
-
-                Swipe(event);
+                swipe(event);
                 return true;
             }
         });
@@ -121,15 +103,30 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         });
     }
 
+    //normal mood and background are set by default when using the app for the first time
+    public void firstTimeUse() {
+        mDisplayedMood.setImageDrawable(moodImagesList[moodIndex]);
+        mLayout.setBackgroundColor(backgroundColorsList[moodIndex]);
+    }
+
     //get the last saved preferences(or default one if first use)
     public void getMoodPreferences() {
         moodIndex = getPreferences(MODE_PRIVATE).getInt("mood_index", 3);
         moodComment = getPreferences(MODE_PRIVATE).getString("comment", "");
         jsonDate = getPreferences(MODE_PRIVATE).getString("date", null);
+
+        if(jsonDate != null) {
+            moodDate = gson.fromJson(jsonDate, new TypeToken<int[]>(){}.getType());
+        }
+
+        jsonMood = preferences.getString("Moods", null);
+        if(jsonMood != null) {
+            moodList = gson.fromJson(jsonMood, new TypeToken<List<Mood>>(){}.getType());
+        }
     }
 
     //connecting the views
-    public void layoutConnexion() {
+    private void layoutConnexion() {
         mDisplayedMood = findViewById(R.id.activity_mood_select_placeholder_image);
         mAddComment = findViewById(R.id.activity_add_comment_image);
         mLayout = findViewById(R.id.activity_mood_select_layout_layout);
@@ -137,7 +134,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         mSendMessage = findViewById(R.id.activity_mood_select_sendmessage_image);
     }
 
-    public void checkingForNewDay() {
+    private void checkingForNewDay() {
         //compare days of month to know if it's a new day
         boolean mIsANewDay = util.compareDate(moodDate[0], moodDate[1]);
         if (mIsANewDay && jsonDate != null) {
@@ -162,7 +159,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
     }
 
     //all five moods' images are stored in moodImagesList from worst [0] to best [4]
-    public void initMoodsList() {
+    private void initMoodsList() {
         moodImagesList[0] = getResources().getDrawable(R.drawable.smiley_sad);
         moodImagesList[1] = getResources().getDrawable(R.drawable.smiley_disappointed);
         moodImagesList[2] = getResources().getDrawable(R.drawable.smiley_normal);
@@ -171,7 +168,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
     }
 
     //all five background colors are stored in backgroundColorsList in a order corresponding to moodImagesList
-    public void initColorsList () {
+    private void initColorsList () {
         backgroundColorsList[0] = getResources().getColor(R.color.faded_red);
         backgroundColorsList[1] = getResources().getColor(R.color.warm_grey);
         backgroundColorsList[2] = getResources().getColor(R.color.cornflower_blue_65);
@@ -180,23 +177,23 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
     }
 
     //check if user gesture went upward or downward and put moodIndex in the correct position then display the right mood and backgroundcolor
-    public void Swipe(MotionEvent event) {
-        float y_difference;
-        float y_up;
+    private void swipe(MotionEvent event) {
+        float yDifference;
+        float yUp;
 
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            y_down = event.getY();
+            yDown = event.getY();
         }
         if (event.getAction() == MotionEvent.ACTION_UP) {
-            y_up = event.getY();
-            y_difference = Math.abs(y_down - y_up);
-            if (y_down > y_up) {
+            yUp = event.getY();
+            yDifference = Math.abs(yDown - yUp);
+            if (yDown > yUp) {
                 mSwipeUp = true;
-            } else if (y_down < y_up) {
+            } else if (yDown < yUp) {
                 mSwipeUp = false;
             }
 
-            if(y_difference > 100) {
+            if(yDifference > 100) {
                 if (mSwipeUp && moodIndex < 4) {
                     moodIndex++;
                 } else if (!mSwipeUp && moodIndex > 0) {
@@ -218,7 +215,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         }
     }
 
-    public void openDialog() {
+    private void openDialog() {
         CommentDialog commentDialog = new CommentDialog();
         commentDialog.show(getSupportFragmentManager(), "comment dialog");
     }
