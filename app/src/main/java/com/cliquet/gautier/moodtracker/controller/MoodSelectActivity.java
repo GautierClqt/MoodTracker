@@ -25,33 +25,32 @@ import java.util.List;
 public class MoodSelectActivity extends AppCompatActivity implements CommentDialog.CommentDialogListener {
 
     private int moodIndex;
-    protected String moodComment = "";
+    private String moodComment = "";
     private Calendar mDate;
-
     private int[] moodDate = new int[2];
-
-    private RelativeLayout mLayout;
 
     private Drawable[] moodImagesList = new Drawable[5];
     private int[] backgroundColorsList = new int[5];
+
     private SharedPreferences preferences;
 
-    Mood mood = new Mood(moodIndex, moodComment, moodDate);
-    Utils util = new Utils();
-    Gson gson = new Gson();
-
+    private Mood mood = new Mood(moodIndex, moodComment, moodDate);
     private ArrayList<Mood> moodList = new ArrayList<>();
-    String jsonMood;
-    String jsonDate;
+    private Utils util = new Utils();
+    private Gson gson = new Gson();
 
-    public ImageView mDisplayedMood;
+    private String jsonMood;
+    private String jsonDate;
 
     private boolean mSwipeUp;
     private float yDown;
 
-    ImageView mAddComment;
-    ImageView mDisplayHistoricActivity;
-    public ImageView mSendMessage;
+    private RelativeLayout mLayout;
+    private ImageView mAddComment;
+    private ImageView mDisplayHistoricActivity;
+    private ImageView mSendMessage;
+    private  ImageView mDisplayedMood;
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -149,9 +148,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
             preferences.edit().putString("Moods", jsonMood).apply();
 
             //getting date and time and extracting day of year and year for further comparison
-            mDate = Calendar.getInstance();
-            moodDate[0] = mDate.get(Calendar.DAY_OF_YEAR);
-            moodDate[1] = mDate.get(Calendar.YEAR);
+            getDates();
 
             //adding date, index, comment to preferences
             preferences.edit().putString("date", jsonDate = gson.toJson(moodDate)).apply();
@@ -202,20 +199,23 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
                 } else if (!mSwipeUp && moodIndex > 0) {
                     moodIndex--;
                 }
-
                 mDisplayedMood.setImageDrawable(moodImagesList[moodIndex]);
                 mLayout.setBackgroundColor(backgroundColorsList[moodIndex]);
 
-                //getting date and time and extracting day of year and year for further comparison
-                mDate = Calendar.getInstance();
-                moodDate[0] = mDate.get(Calendar.DAY_OF_YEAR);
-                moodDate[1] = mDate.get(Calendar.YEAR);
+                getDates();
 
                 //adding index and date to preferences
                 preferences.edit().putInt("mood_index", moodIndex).apply();
                 preferences.edit().putString("date", jsonDate = gson.toJson(moodDate)).apply();
             }
         }
+    }
+
+    //getting date and time and extracting day of year and year for further comparison
+    private void getDates() {
+        mDate = Calendar.getInstance();
+        moodDate[0] = mDate.get(Calendar.DAY_OF_YEAR);
+        moodDate[1] = mDate.get(Calendar.YEAR);
     }
 
     private void openDialog() {
