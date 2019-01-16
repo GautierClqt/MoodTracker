@@ -1,4 +1,4 @@
-package com.cliquet.gautier.moodtracker;
+package com.cliquet.gautier.moodtracker.controller;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.cliquet.gautier.moodtracker.R;
 
 import java.util.ArrayList;
 

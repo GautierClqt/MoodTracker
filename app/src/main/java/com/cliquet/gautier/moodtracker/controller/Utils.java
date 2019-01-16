@@ -1,4 +1,4 @@
-package com.cliquet.gautier.moodtracker;
+package com.cliquet.gautier.moodtracker.controller;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -7,7 +7,7 @@ import android.support.v4.content.ContextCompat;
 
 import java.util.Calendar;
 
-class Utils {
+public class Utils {
 
     private Calendar newDate = Calendar.getInstance();
 

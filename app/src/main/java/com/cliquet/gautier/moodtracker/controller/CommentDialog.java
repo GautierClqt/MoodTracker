@@ -1,4 +1,4 @@
-package com.cliquet.gautier.moodtracker;
+package com.cliquet.gautier.moodtracker.controller;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+
+import com.cliquet.gautier.moodtracker.R;
 
 import java.util.Objects;
 

@@ -1,16 +1,19 @@
-package com.cliquet.gautier.moodtracker;
+package com.cliquet.gautier.moodtracker.controller;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import com.cliquet.gautier.moodtracker.R;
+import com.cliquet.gautier.moodtracker.model.Mood;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

@@ -1,4 +1,4 @@
-package com.cliquet.gautier.moodtracker;
+package com.cliquet.gautier.moodtracker.model;
 
 import java.io.Serializable;
 
@@ -8,21 +8,21 @@ public class Mood implements Serializable {
     private String mComment;
     private int[] mDate;
 
-    Mood(int mIndexMood, String mComment, int[] mDate) {
+    public Mood(int mIndexMood, String mComment, int[] mDate) {
         this.mIndexMood = mIndexMood;
         this.mComment = mComment;
         this.mDate = mDate;
     }
 
-    int getIndexMood() {
+    public int getIndexMood() {
         return mIndexMood;
     }
 
-    String getComment() {
+    public String getComment() {
         return mComment;
     }
 
-    void setComment(String mComment) {
+    public void setComment(String mComment) {
         this.mComment = mComment;
     }
 

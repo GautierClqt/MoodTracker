@@ -1,9 +1,12 @@
-package com.cliquet.gautier.moodtracker;
+package com.cliquet.gautier.moodtracker.controller;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+import com.cliquet.gautier.moodtracker.R;
+import com.cliquet.gautier.moodtracker.model.Mood;
 
 import java.util.ArrayList;
 
