@@ -22,11 +22,10 @@ import java.util.Calendar;
 import java.util.List;
 
 
-public class MoodSelectActivity extends AppCompatActivity implements CommentDialog.CommentDialogListener {
+public class MoodSelectActivity extends AppCompatActivity implements CommentDialog.CommentDialogListener, View.OnClickListener {
 
     private int moodIndex;
     private String moodComment = "";
-    private Calendar mDate;
     private int[] moodDate = new int[2];
 
     private Drawable[] moodImagesList = new Drawable[5];
@@ -147,9 +146,6 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
             jsonMood = gson.toJson(moodList);
             preferences.edit().putString("Moods", jsonMood).apply();
 
-            //getting date and time and extracting day of year and year for further comparison
-            getDates();
-
             //adding date, index, comment to preferences
             preferences.edit().putString("date", jsonDate = gson.toJson(moodDate)).apply();
             preferences.edit().putInt("mood_index", moodIndex = 3).apply();
@@ -213,9 +209,9 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
 
     //getting date and time and extracting day of year and year for further comparison
     private void getDates() {
-        mDate = Calendar.getInstance();
-        moodDate[0] = mDate.get(Calendar.DAY_OF_YEAR);
-        moodDate[1] = mDate.get(Calendar.YEAR);
+        Calendar mMDate = Calendar.getInstance();
+        moodDate[0] = mMDate.get(Calendar.DAY_OF_YEAR);
+        moodDate[1] = mMDate.get(Calendar.YEAR);
     }
 
     private void openDialog() {
@@ -230,6 +226,11 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         mood.setComment(moodComment);
         moodComment = mood.getComment();
         preferences.edit().putString("comment", moodComment).apply();
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }
 

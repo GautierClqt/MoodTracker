@@ -1,9 +1,7 @@
 package com.cliquet.gautier.moodtracker.controller;
 
-import android.content.Context;
+
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.support.v4.content.ContextCompat;
 
 import java.util.Calendar;
 
