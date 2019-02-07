@@ -60,6 +60,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
         preferences = getPreferences(MODE_PRIVATE);
         getMoodPreferences();
         checkingForNewDay();
+        getDates();
         layoutConnexion();
         initMoodsList();
         initColorsList();
@@ -147,6 +148,7 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
             preferences.edit().putString("Moods", jsonMood).apply();
 
             //adding date, index, comment to preferences
+            getDates();
             preferences.edit().putString("date", jsonDate = gson.toJson(moodDate)).apply();
             preferences.edit().putInt("mood_index", moodIndex = 3).apply();
             preferences.edit().putString("comment", moodComment = "").apply();
@@ -209,9 +211,9 @@ public class MoodSelectActivity extends AppCompatActivity implements CommentDial
 
     //getting date and time and extracting day of year and year for further comparison
     private void getDates() {
-        Calendar mMDate = Calendar.getInstance();
-        moodDate[0] = mMDate.get(Calendar.DAY_OF_YEAR);
-        moodDate[1] = mMDate.get(Calendar.YEAR);
+        Calendar mDate = Calendar.getInstance();
+        moodDate[0] = mDate.get(Calendar.DAY_OF_YEAR);
+        moodDate[1] = mDate.get(Calendar.YEAR);
     }
 
     private void openDialog() {
