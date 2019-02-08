@@ -18,6 +18,8 @@ public class HistoricDisplayActivity extends AppCompatActivity {
     private ArrayList<Integer> mTextViewWeightList = new ArrayList<>();
     private ArrayList<String> mCommentList = new ArrayList<>();
 
+    int mBackgroundColor;
+
     Utils util = new Utils();
 
     @Override
@@ -31,15 +33,29 @@ public class HistoricDisplayActivity extends AppCompatActivity {
     //get the moods ArrayList to fill up the history RecyclerView
     private void initMoodHistoryList() {
         //Arraylist getting the moodlist from MoodSelectActivity
-        ArrayList<Mood> MoodList = (ArrayList<Mood>) getIntent().getSerializableExtra("List_Of_Moods");
+        ArrayList<Mood> moodList = (ArrayList<Mood>) getIntent().getSerializableExtra("List_Of_Moods");
 
-        for(int i = 0; i <= MoodList.size()-1; i++) {
-            mCommentList.add(MoodList.get(i).getComment());
-            String mMDays = util.timeAgo(MoodList.get(i).getDate());
+        for(int i = 0; i <= moodList.size()-1; i++) {
+            mCommentList.add(moodList.get(i).getComment());
+            String mMDays = util.timeAgo(moodList.get(i).getDate());
             mDateList.add(mMDays);
-            int mMBackgroundColor = util.changeBackgroundColor(MoodList.get(i).getIndexMood());
-            mBackgroundColorList.add(mMBackgroundColor);
-            mTextViewWeightList.add(MoodList.get(i).getIndexMood());
+
+            int moodIndex = moodList.get(i).getIndexMood();
+
+            switch(moodIndex) {
+                case 0: mBackgroundColor = getResources().getColor(R.color.faded_red);
+                    break;
+                case 1: mBackgroundColor = getResources().getColor(R.color.warm_grey);
+                    break;
+                case 2: mBackgroundColor = getResources().getColor(R.color.cornflower_blue_65);
+                    break;
+                case 3: mBackgroundColor = getResources().getColor(R.color.light_sage);
+                    break;
+                case 4: mBackgroundColor = getResources().getColor(R.color.banana_yellow);
+                    break;
+            }
+            mBackgroundColorList.add(mBackgroundColor);
+            mTextViewWeightList.add(moodList.get(i).getIndexMood());
         }
         initRecyclerView();
     }

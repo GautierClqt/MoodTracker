@@ -1,32 +1,10 @@
 package com.cliquet.gautier.moodtracker.controller;
 
-
-import android.graphics.Color;
-
 import java.util.Calendar;
 
 public class Utils {
 
     private Calendar newDate = Calendar.getInstance();
-
-    //get the correct color according to the selected mood
-    int changeBackgroundColor(int mMoodPosition) {
-        int mBackgroundColor = 0;
-
-        switch(mMoodPosition) {
-            case 0: mBackgroundColor = Color.parseColor("#ffde3c50");
-                break;
-            case 1: mBackgroundColor = Color.parseColor("#ff9b9b9b");
-                break;
-            case 2: mBackgroundColor = Color.parseColor("#a5468ad9");
-                break;
-            case 3: mBackgroundColor = Color.parseColor("#ffb8e986");
-                break;
-            case 4: mBackgroundColor = Color.parseColor("#fff9ec4f");
-                break;
-        }
-        return mBackgroundColor;
-    }
 
     //determine if this is a new day
     boolean compareDate(int oldDayOfYear, int oldYear) {

@@ -43,9 +43,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, @SuppressLint("RecyclerView") final int i) {
 
-        String test;
-        test = mComment.get(i);
-        if(test.equals("")) {
+        String emptyComment;
+        emptyComment = mComment.get(i);
+        if(emptyComment.equals("")) {
             viewHolder.historicCommentImage.setVisibility(View.GONE);
         }
         else {
